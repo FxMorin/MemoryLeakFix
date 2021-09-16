@@ -15,7 +15,7 @@ public class MinecraftServer_userCacheMixin {
 
     /**
      * Fixes userCache executor keeping the last minecraftServer instance in memory instead
-     * of unloading it once the server closes.
+     * of unloading it once the server closes. Mostly due to SkullBlockEntity
      */
 
     @Shadow @Final @Nullable private UserCache userCache;
