@@ -4,7 +4,6 @@
   "package": "ca.fxco.memoryleakfix.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "BlockStateFlattening_whenNeededMixin",
     "MinecraftClient_tickClearMixin",
     "MinecraftClient_memoryCleanupMixin",
     "MinecraftServer_tickClearMixin",
