@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ca.fxco.memoryleakfix.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "BlockStateFlattening_whenNeededMixin",
+    "MinecraftClient_tickClearMixin",
+    "MinecraftClient_memoryCleanupMixin",
+    "MinecraftServer_tickClearMixin",
+    "MinecraftServer_userCacheMixin",
+    "WorldRenderer_clientWorldMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
