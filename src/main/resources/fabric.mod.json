@@ -17,7 +17,7 @@
     ]
   },
   "mixins": [
-    "ca.fxco.memoryleakfix.mixins.json"
+    "memoryLeakFix.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.11.3",
