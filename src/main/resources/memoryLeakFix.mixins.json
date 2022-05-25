@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MinecraftClient_targetClearMixin",
-    "MinecraftClient_tickClearMixin",
-    "MinecraftServer_tickClearMixin"
+    "MinecraftServer_loadWorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1
