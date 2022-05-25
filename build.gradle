@@ -1,16 +1,22 @@
 plugins {
-    id 'fabric-loom' version '0.8-SNAPSHOT'
+    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'io.github.juuxel.loom-quiltflower' version '1.7.1'
     id 'maven-publish'
+}
+
+runClient.doFirst {
+    args = ['--username', "PR0CESS", '--uuid', UUID.randomUUID()]
 }
 
 repositories {
     maven {
         url 'https://masa.dy.fi/maven'
     }
+    mavenCentral()
 }
 
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.minecraft_version+'-'+project.mod_version
@@ -24,10 +30,6 @@ dependencies {
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
-}
-
-loom {
-    accessWidener = file("src/main/resources/memoryleakfix.accesswidener")
 }
 
 processResources {
@@ -44,12 +46,16 @@ tasks.withType(JavaCompile).configureEach {
     // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     // If Javadoc is generated, this must be specified in that task too.
     it.options.encoding = "UTF-8"
-    it.options.release = 16
+    it.options.release = 17
 }
 
-java {withSourcesJar()}
+java {
+    withSourcesJar()
+}
 
-jar {from "LICENSE"}
+jar {
+    from "LICENSE"
+}
 
 // configure the maven publication
 publishing {

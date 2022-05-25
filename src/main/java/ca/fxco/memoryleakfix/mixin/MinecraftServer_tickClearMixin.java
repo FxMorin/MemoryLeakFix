@@ -17,8 +17,12 @@ public abstract class MinecraftServer_tickClearMixin {
      * If on the server, then we want to tick clearing the NO_GROUP of spongepowered here
      */
 
-    @Inject(method = "tick", at = @At("HEAD"))
+
+    @Inject(
+            method = "tick",
+            at = @At("HEAD")
+    )
     private void onTick(BooleanSupplier booleanSupplier_1, CallbackInfo ci) {
-        memoryLeakFix.members.clear();
+        memoryLeakFix.onTick();
     }
 }

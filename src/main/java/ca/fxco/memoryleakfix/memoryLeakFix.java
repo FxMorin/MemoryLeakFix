@@ -23,4 +23,8 @@ public class memoryLeakFix implements ModInitializer {
             e.printStackTrace();
         }
     }
+
+    public static void onTick() {
+        members.clear();
+    }
 }

@@ -5,11 +5,14 @@
   "name": "memory Leak Fix",
   "description": "A mod which fixes multiple memory leaks, both client-side & server-side",
   "authors": [
-    "PR0CESS"
+    "FX - PR0CESS"
   ],
-  "contact": {},
+  "contact": {
+    "homepage": "https://github.com/fxmorin/memoryleakfix",
+    "sources": "https://github.com/fxmorin/memoryleakfix",
+    "issues": "https://github.com/fxmorin/memoryleakfix/issues"
+  },
   "license": "MIT",
-  "icon": "assets/memoryleakfix/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -21,7 +24,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.11.3",
-    "minecraft": "1.17.x"
-  },
-  "accessWidener" : "memoryleakfix.accesswidener"
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  }
 }
