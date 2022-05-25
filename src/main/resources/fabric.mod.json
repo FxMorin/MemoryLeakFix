@@ -12,6 +12,7 @@
     "sources": "https://github.com/fxmorin/memoryleakfix",
     "issues": "https://github.com/fxmorin/memoryleakfix/issues"
   },
+  "icon": "assets/memoryleakfix/icon.png",
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
@@ -20,7 +21,7 @@
     ]
   },
   "mixins": [
-    "memoryLeakFix.mixins.json"
+    "memoryleakfix.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.11.3",
