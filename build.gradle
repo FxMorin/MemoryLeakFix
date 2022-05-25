@@ -19,7 +19,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
-version = project.minecraft_version+'-'+project.mod_version
+version = project.minecraft_version+'-'+project.mod_version+'-ForceLoad'
 group = project.maven_group
 
 dependencies {
