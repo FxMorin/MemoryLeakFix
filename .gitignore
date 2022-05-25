@@ -125,3 +125,5 @@ run/
 bin/
 .classpath
 .project
+# Don't show my terrible icon design
+large-icon.png
