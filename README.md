@@ -7,3 +7,7 @@ For the best performance & memory usage, I recommend using this mod with:
 - [lithium-fabric](https://github.com/CaffeineMC/lithium-fabric) - The best general performance mod  
 - [hydrogen-fabric](https://github.com/CaffeineMC/hydrogen-fabric) - A memory based optimization mod  
 - [starlight](https://github.com/PaperMC/Starlight) - Re-write of the light engine to be blazing fast  
+  
+  
+Feel free to contribute to the project!  
+I'm also fine if you use this mod in your modpacks  
