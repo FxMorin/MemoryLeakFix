@@ -3,10 +3,12 @@
   "minVersion": "0.8",
   "package": "ca.fxco.memoryleakfix.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
-    "MinecraftClient_targetClearMixin",
-    "MinecraftClient_tickClearMixin",
+  "server": [
     "MinecraftServer_tickClearMixin"
+  ],
+  "client": [
+    "MinecraftClient_targetClearMixin",
+    "MinecraftClient_tickClearMixin"
   ],
   "injectors": {
     "defaultRequire": 1
