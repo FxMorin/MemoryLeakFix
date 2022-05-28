@@ -13,7 +13,7 @@
     "issues": "https://github.com/fxmorin/memoryleakfix/issues"
   },
   "icon": "assets/memoryleakfix/icon.png",
-  "license": "GNU GPL v3",
+  "license": "GPL-3.0-only",
   "environment": "*",
   "entrypoints": {
     "main": [
