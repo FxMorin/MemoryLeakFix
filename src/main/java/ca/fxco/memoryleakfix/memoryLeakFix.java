@@ -53,7 +53,8 @@ public class memoryLeakFix implements ModInitializer {
             return; // Crashes crafty crashes if it crashes
         Field cacheField = ClassInfo.class.getDeclaredField("cache");
         cacheField.setAccessible(true);
-        Map<?, ?> cache = ((Map<?, ?>)cacheField.get(null));
+        @SuppressWarnings("unchecked")
+        Map<String, ClassInfo> cache = ((Map<String, ClassInfo>)cacheField.get(null));
         ClassInfo jlo = cache.get(OBJECT);
         cache.clear();
         cache.put(OBJECT, jlo);
