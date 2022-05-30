@@ -1,12 +1,15 @@
 package ca.fxco.memoryleakfix.mixin;
 
 import ca.fxco.memoryleakfix.memoryLeakFix;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.main.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+@Environment(EnvType.CLIENT)
 @Mixin(Main.class)
 public class Main_clientLoadedMixin {
 
