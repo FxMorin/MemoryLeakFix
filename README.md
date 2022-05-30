@@ -12,3 +12,6 @@ Feel free to contribute to the project!
 I'm also fine if you use this mod in your modpacks  
 
 Memory Leak Explanations: https://github.com/fxmorin/memoryLeakFix/wiki/Current-Fixes
+
+I don't give consent to Debugify to use this mod. Here's why:
+https://gist.github.com/fxmorin/9770473614e3e5e0703e44273dab33f7
