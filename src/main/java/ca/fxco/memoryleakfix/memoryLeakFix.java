@@ -45,12 +45,17 @@ public class memoryLeakFix implements ModInitializer {
             e.printStackTrace();
         }
     }
+    
+    private static final String OBJECT = "java/lang/Object";
 
     private static void emptyClassInfo() throws NoSuchFieldException, IllegalAccessException {
         if (FabricLoader.getInstance().isModLoaded("not-that-cc"))
             return; // Crashes crafty crashes if it crashes
         Field cacheField = ClassInfo.class.getDeclaredField("cache");
         cacheField.setAccessible(true);
-        ((Map<?, ?>)cacheField.get(null)).clear();
+        Map<?, ?> cache = ((Map<?, ?>)cacheField.get(null));
+        ClassInfo jlo = cache.get(OBJECT);
+        cache.clear();
+        cache.put(OBJECT, jlo);
     }
 }
