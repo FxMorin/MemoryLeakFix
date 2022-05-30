@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
 import org.spongepowered.asm.mixin.transformer.ClassInfo;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

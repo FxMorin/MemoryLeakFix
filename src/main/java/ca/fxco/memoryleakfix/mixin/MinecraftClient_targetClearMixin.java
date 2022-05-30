@@ -1,8 +1,6 @@
 package ca.fxco.memoryleakfix.mixin;
 
-import ca.fxco.memoryleakfix.memoryLeakFix;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.hit.HitResult;
@@ -36,14 +34,5 @@ public class MinecraftClient_targetClearMixin {
     private void resetTarget(Screen screen, CallbackInfo ci) {
         this.targetedEntity = null;
         this.crosshairTarget = null;
-    }
-
-
-    @Inject(
-            method = "<init>",
-            at = @At("RETURN")
-    )
-    private void onInitialized(RunArgs args, CallbackInfo ci) {
-        memoryLeakFix.forceLoadAllMixinsAndClearSpongePoweredCache();
     }
 }
