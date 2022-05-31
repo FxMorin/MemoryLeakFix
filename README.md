@@ -10,8 +10,8 @@ For the best performance & memory usage, I recommend using this mod with:
   
 Feel free to contribute to the project!  
 I'm also fine if you use this mod in your modpacks  
-
-Memory Leak Explanations: https://github.com/fxmorin/memoryLeakFix/wiki/Current-Fixes
-
-I don't give consent to Debugify to use this mod (or any mod to merge my mod). Here's why:
-https://gist.github.com/fxmorin/9770473614e3e5e0703e44273dab33f7
+  
+Memory Leak Explanations: https://github.com/fxmorin/memoryLeakFix/wiki/Current-Fixes  
+  
+I don't give consent to Debugify to use this mod (or any mod) to merge my mod into another mod.  
+Here's why: https://gist.github.com/fxmorin/9770473614e3e5e0703e44273dab33f7  
