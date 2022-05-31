@@ -7,7 +7,7 @@
     "SpongePoweredLeak.MinecraftServer_loadWorldMixin"
   ],
   "client": [
-    "MinecraftClient_targetClearMixin",
+    "TargetEntityLeak.MinecraftClient_targetClearMixin",
     "CustomPayloadLeak.CustomPayloadS2CPacket_bufferMixin",
     "CustomPayloadLeak.MinecraftClient_freeBufferMixin",
     "SpongePoweredLeak.Main_clientLoadedMixin"

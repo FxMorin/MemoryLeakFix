@@ -1,4 +1,4 @@
-package ca.fxco.memoryleakfix.mixin;
+package ca.fxco.memoryleakfix.mixin.TargetEntityLeak;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
