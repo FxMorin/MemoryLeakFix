@@ -1,4 +1,4 @@
-package ca.fxco.memoryleakfix.mixin.SpongePoweredLeak;
+package ca.fxco.memoryleakfix.mixin.spongePoweredLeak;
 
 import ca.fxco.memoryleakfix.MemoryLeakFix;
 import net.fabricmc.api.EnvType;

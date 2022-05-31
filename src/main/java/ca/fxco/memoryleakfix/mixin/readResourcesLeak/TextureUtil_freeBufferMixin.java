@@ -1,4 +1,4 @@
-package ca.fxco.memoryleakfix.mixin.ReadResourcesLeak;
+package ca.fxco.memoryleakfix.mixin.readResourcesLeak;
 
 import com.mojang.blaze3d.platform.TextureUtil;
 import net.fabricmc.api.EnvType;

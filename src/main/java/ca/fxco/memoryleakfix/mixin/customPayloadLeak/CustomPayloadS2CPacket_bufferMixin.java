@@ -1,4 +1,4 @@
-package ca.fxco.memoryleakfix.mixin.CustomPayloadLeak;
+package ca.fxco.memoryleakfix.mixin.customPayloadLeak;
 
 import ca.fxco.memoryleakfix.MemoryLeakFix;
 import net.minecraft.network.PacketByteBuf;

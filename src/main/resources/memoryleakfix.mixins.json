@@ -4,14 +4,14 @@
   "package": "ca.fxco.memoryleakfix.mixin",
   "compatibilityLevel": "JAVA_17",
   "server": [
-    "SpongePoweredLeak.MinecraftServer_loadWorldMixin"
+    "spongePoweredLeak.MinecraftServer_loadWorldMixin"
   ],
   "client": [
-    "CustomPayloadLeak.CustomPayloadS2CPacket_bufferMixin",
-    "CustomPayloadLeak.MinecraftClient_freeBufferMixin",
-    "ReadResourcesLeak.TextureUtil_freeBufferMixin",
-    "SpongePoweredLeak.Main_clientLoadedMixin",
-    "TargetEntityLeak.MinecraftClient_targetClearMixin"
+    "customPayloadLeak.CustomPayloadS2CPacket_bufferMixin",
+    "customPayloadLeak.MinecraftClient_freeBufferMixin",
+    "readResourcesLeak.TextureUtil_freeBufferMixin",
+    "spongePoweredLeak.Main_clientLoadedMixin",
+    "targetEntityLeak.MinecraftClient_targetClearMixin"
   ],
   "injectors": {
     "defaultRequire": 1,
