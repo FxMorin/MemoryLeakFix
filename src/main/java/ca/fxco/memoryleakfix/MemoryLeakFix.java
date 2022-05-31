@@ -1,5 +1,6 @@
 package ca.fxco.memoryleakfix;
 
+import io.netty.buffer.ByteBuf;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -10,10 +11,12 @@ import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
 import org.spongepowered.asm.mixin.transformer.ClassInfo;
 
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MemoryLeakFix implements ModInitializer {
+
+    public static final Set<ByteBuf> BUFFERS_TO_CLEAR = new HashSet<>();
+
     @Override
     public void onInitialize() {}
 
