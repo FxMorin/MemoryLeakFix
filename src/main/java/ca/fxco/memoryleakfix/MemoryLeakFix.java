@@ -36,9 +36,19 @@ public class MemoryLeakFix implements ModInitializer {
         }
     }
 
+    private static Class<?> getMixinLoggerClass() throws ClassNotFoundException {
+        Class<?> mixinLogger;
+        try {
+            mixinLogger = Class.forName("net.fabricmc.loader.impl.launch.knot.MixinLogger");
+        } catch (ClassNotFoundException err) {
+            mixinLogger = Class.forName("org.quiltmc.loader.impl.launch.knot.MixinLogger");
+        }
+        return mixinLogger;
+    }
+
     private static void silenceAuditLogger() {
         try {
-            Field loggerField = Class.forName("net.fabricmc.loader.impl.launch.knot.MixinLogger").getDeclaredField("LOGGER_MAP");
+            Field loggerField = getMixinLoggerClass().getDeclaredField("LOGGER_MAP");
             loggerField.setAccessible(true);
             @SuppressWarnings("unchecked")
             Map<String, ILogger> loggerMap = (Map<String, ILogger>)loggerField.get(null);
