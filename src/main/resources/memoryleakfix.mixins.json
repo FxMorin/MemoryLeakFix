@@ -7,12 +7,16 @@
     "SpongePoweredLeak.MinecraftServer_loadWorldMixin"
   ],
   "client": [
+    "MinecraftClient_targetClearMixin",
     "CustomPayloadLeak.CustomPayloadS2CPacket_bufferMixin",
     "CustomPayloadLeak.MinecraftClient_freeBufferMixin",
-    "MinecraftClient_targetClearMixin",
     "SpongePoweredLeak.Main_clientLoadedMixin"
   ],
   "injectors": {
-    "defaultRequire": 1
-  }
+    "defaultRequire": 1,
+    "maxShiftBy": 2
+  },
+  "mixins": [
+    "ReadResourcesLeak.TextureUtil_freeBufferMixin"
+  ]
 }
