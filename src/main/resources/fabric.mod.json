@@ -17,7 +17,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "ca.fxco.memoryleakfix.memoryLeakFix"
+      "ca.fxco.memoryleakfix.MemoryLeakFix"
     ]
   },
   "mixins": [

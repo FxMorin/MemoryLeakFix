@@ -1,6 +1,6 @@
-package ca.fxco.memoryleakfix.mixin;
+package ca.fxco.memoryleakfix.mixin.SpongePoweredLeak;
 
-import ca.fxco.memoryleakfix.memoryLeakFix;
+import ca.fxco.memoryleakfix.MemoryLeakFix;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.server.MinecraftServer;
@@ -19,6 +19,6 @@ public class MinecraftServer_loadWorldMixin {
             at = @At("RETURN")
     )
     private void onFinishedLoadingWorlds(CallbackInfo ci) {
-        memoryLeakFix.forceLoadAllMixinsAndClearSpongePoweredCache();
+        MemoryLeakFix.forceLoadAllMixinsAndClearSpongePoweredCache();
     }
 }

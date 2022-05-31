@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-public class memoryLeakFix implements ModInitializer {
+public class MemoryLeakFix implements ModInitializer {
     @Override
     public void onInitialize() {}
 

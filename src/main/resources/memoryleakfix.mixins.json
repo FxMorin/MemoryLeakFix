@@ -4,11 +4,11 @@
   "package": "ca.fxco.memoryleakfix.mixin",
   "compatibilityLevel": "JAVA_17",
   "server": [
-    "MinecraftServer_loadWorldMixin"
+    "SpongePoweredLeak.MinecraftServer_loadWorldMixin"
   ],
   "client": [
-    "Main_clientLoadedMixin",
-    "MinecraftClient_targetClearMixin"
+    "MinecraftClient_targetClearMixin",
+    "SpongePoweredLeak.Main_clientLoadedMixin"
   ],
   "injectors": {
     "defaultRequire": 1

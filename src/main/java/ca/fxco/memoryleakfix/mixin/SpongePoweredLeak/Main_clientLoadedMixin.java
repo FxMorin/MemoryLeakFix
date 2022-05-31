@@ -1,6 +1,6 @@
-package ca.fxco.memoryleakfix.mixin;
+package ca.fxco.memoryleakfix.mixin.SpongePoweredLeak;
 
-import ca.fxco.memoryleakfix.memoryLeakFix;
+import ca.fxco.memoryleakfix.MemoryLeakFix;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -22,7 +22,7 @@ public class Main_clientLoadedMixin {
             )
     )
     private static boolean loadAllMixinsThenShouldRenderAsync(MinecraftClient instance) {
-        memoryLeakFix.forceLoadAllMixinsAndClearSpongePoweredCache();
+        MemoryLeakFix.forceLoadAllMixinsAndClearSpongePoweredCache();
         return instance.shouldRenderAsync();
     }
 }
