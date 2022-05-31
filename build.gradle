@@ -9,9 +9,6 @@ runClient.doFirst {
 }
 
 repositories {
-    maven {
-        url 'https://masa.dy.fi/maven'
-    }
     mavenCentral()
 }
 
