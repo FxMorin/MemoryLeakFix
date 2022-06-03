@@ -1,7 +1,7 @@
 package ca.fxco.memoryleakfix.mixin.customPayloadLeak;
 
 import ca.fxco.memoryleakfix.MemoryLeakFix;
-import io.netty.util.ReferenceCounted;
+import io.netty.buffer.ByteBuf;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -19,11 +19,17 @@ public class MinecraftClient_freeBufferMixin {
      */
 
 
+    // Make sure that the there is a reference to release first!
+    private boolean canRelease(ByteBuf buffer) {
+        return buffer.refCnt() < 1 || buffer.release();
+    }
+
+
     @Inject(
             method = "tick",
             at = @At("RETURN")
     )
     private void releaseAfterTick(CallbackInfo ci) {
-        MemoryLeakFix.BUFFERS_TO_CLEAR.removeIf(ReferenceCounted::release);
+        MemoryLeakFix.BUFFERS_TO_CLEAR.removeIf(this::canRelease);
     }
 }
