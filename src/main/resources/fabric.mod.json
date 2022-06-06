@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "memoryleakfix",
   "version": "${version}",
-  "name": "memory Leak Fix",
+  "name": "Memory Leak Fix",
   "description": "A mod which fixes multiple memory leaks, both client-side & server-side",
   "authors": [
     "FX - PR0CESS"
