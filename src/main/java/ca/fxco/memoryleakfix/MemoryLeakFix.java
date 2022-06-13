@@ -25,8 +25,6 @@ public class MemoryLeakFix implements ModInitializer {
     public void onInitialize() {}
 
     public static void forceLoadAllMixinsAndClearSpongePoweredCache() {
-        if (FabricLoader.getInstance().isModLoaded("essential-loader"))
-            return; // Temporarily disabling essential-loader crashing due to Mixin ForceLoad
         LOGGER.info("[MemoryLeakFix] Attempting to ForceLoad All Mixins and clear cache");
         silenceAuditLogger();
         MixinEnvironment.getCurrentEnvironment().audit();
