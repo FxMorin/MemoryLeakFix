@@ -23,7 +23,7 @@ public class MinecraftClient_screenshotMixin {
             at = @At("HEAD")
     )
     private void createByteBuffer(File gameDirectory, int unitWidth, int unitHeight, int width, int height, CallbackInfoReturnable<Text> cir) {
-        this.byteBuffer = GlDebugInfo.allocateMemory(unitWidth * unitHeight * 3);
+        this.byteBuffer = GlDebugInfo.allocateMemory(unitWidth * unitHeight * 3); // Move out of try-catch
     }
 
 
@@ -43,7 +43,10 @@ public class MinecraftClient_screenshotMixin {
             method = "takeHugeScreenshot",
             at = @At(
                     value = "INVOKE",
-                    target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Throwable;)V"
+                    target = "Lnet/minecraft/text/Text;translatable(Ljava/lang/String;[Ljava/lang/Object;)" +
+                            "Lnet/minecraft/text/MutableText;",
+                    ordinal = 1,
+                    shift = At.Shift.BEFORE
             )
     )
     private void freeByteBuffer(File gameDirectory, int unitWidth, int unitHeight, int width, int height, CallbackInfoReturnable<Text> cir) {
