@@ -14,11 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(CustomPayloadS2CPacket.class)
 public class CustomPayloadS2CPacket_bufferMixin {
 
-    @Shadow
-    @Final
-    private PacketByteBuf data;
-
-
     /*
      * The issue here is that for Custom Payload packets, the netty buffer is never freed.
      * Unlike the bug report states [MC-121884](https://bugs.mojang.com/browse/MC-121884)
@@ -29,6 +24,11 @@ public class CustomPayloadS2CPacket_bufferMixin {
      *
      * By Fx Morin
      */
+
+
+    @Shadow
+    @Final
+    private PacketByteBuf data;
 
 
     @Inject(

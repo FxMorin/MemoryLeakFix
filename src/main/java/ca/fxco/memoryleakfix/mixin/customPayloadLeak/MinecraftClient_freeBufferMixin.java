@@ -20,8 +20,8 @@ public class MinecraftClient_freeBufferMixin {
 
 
     // Make sure that the there is a reference to release first!
-    private boolean canRelease(ByteBuf buffer) {
-        return buffer.refCnt() < 1 || buffer.release();
+    private boolean tryRelease(ByteBuf buffer) {
+        return buffer.refCnt() == 0 && buffer.release();
     }
 
 
@@ -30,6 +30,6 @@ public class MinecraftClient_freeBufferMixin {
             at = @At("RETURN")
     )
     private void releaseAfterTick(CallbackInfo ci) {
-        MemoryLeakFix.BUFFERS_TO_CLEAR.removeIf(this::canRelease);
+        MemoryLeakFix.BUFFERS_TO_CLEAR.removeIf(this::tryRelease);
     }
 }
