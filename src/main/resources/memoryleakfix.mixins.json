@@ -9,6 +9,7 @@
   "client": [
     "customPayloadLeak.CustomPayloadS2CPacket_bufferMixin",
     "customPayloadLeak.MinecraftClient_freeBufferMixin",
+    "hugeScreenshotLeak.MinecraftClient_screenshotMixin",
     "readResourcesLeak.TextureUtil_freeBufferMixin",
     "spongePoweredLeak.Main_clientLoadedMixin",
     "targetEntityLeak.MinecraftClient_targetClearMixin"

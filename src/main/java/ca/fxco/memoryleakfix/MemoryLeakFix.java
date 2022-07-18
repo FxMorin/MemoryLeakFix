@@ -15,7 +15,7 @@ import java.util.*;
 
 public class MemoryLeakFix implements ModInitializer {
 
-    public static final Set<ByteBuf> BUFFERS_TO_CLEAR = Collections.synchronizedSet(new HashSet<>());;
+    public static final Set<ByteBuf> BUFFERS_TO_CLEAR = Collections.synchronizedSet(new HashSet<>());
 
     @Override
     public void onInitialize() {}
