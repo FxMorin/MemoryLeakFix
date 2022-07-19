@@ -7,7 +7,6 @@
     "spongePoweredLeak.MinecraftServer_loadWorldMixin"
   ],
   "client": [
-    "accessor.AbstractReferenceCountedByteBufAccessor",
     "customPayloadLeak.CustomPayloadS2CPacket_bufferMixin",
     "customPayloadLeak.MinecraftClient_freeBufferMixin",
     "customPayloadLeak.PacketByteBuf_extendMixin",
