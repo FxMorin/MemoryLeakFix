@@ -1,11 +1,11 @@
 package ca.fxco.memoryleakfix.mixin.customPayloadLeak;
 
 import ca.fxco.memoryleakfix.MemoryLeakFix;
-import ca.fxco.memoryleakfix.mixin.accessor.AbstractReferenceCountedByteBufAccessor;
-import io.netty.buffer.ByteBuf;
+import ca.fxco.memoryleakfix.extensions.ExtendPacketByteBuf;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.network.PacketByteBuf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,10 +20,8 @@ public class MinecraftClient_freeBufferMixin {
      */
 
     // Make sure that the there is a reference to release first!
-    private boolean tryRelease(ByteBuf buffer) {
-        return buffer.refCnt() == 0 &&
-                ((AbstractReferenceCountedByteBufAccessor)buffer).invokeIsAccessible() &&
-                buffer.release();
+    private boolean tryRelease(PacketByteBuf buffer) {
+        return ((ExtendPacketByteBuf)buffer).isAccessible() && buffer.release();
     }
 
 
