@@ -1,5 +1,7 @@
 package ca.fxco.memoryleakfix.extensions;
 
+import io.netty.buffer.ByteBuf;
+
 public interface ExtendPacketByteBuf {
-    boolean isAccessible();
+    ByteBuf getParent();
 }
