@@ -1,6 +1,7 @@
 package ca.fxco.memoryleakfix.mixin.customPayloadLeak;
 
 import ca.fxco.memoryleakfix.MemoryLeakFix;
+import ca.fxco.memoryleakfix.mixin.accessor.AbstractReferenceCountedByteBufAccessor;
 import io.netty.buffer.ByteBuf;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -18,10 +19,11 @@ public class MinecraftClient_freeBufferMixin {
      * Free the packets at the end of the tick
      */
 
-
     // Make sure that the there is a reference to release first!
     private boolean tryRelease(ByteBuf buffer) {
-        return buffer.refCnt() == 0 && buffer.release();
+        return buffer.refCnt() == 0 &&
+                ((AbstractReferenceCountedByteBufAccessor)buffer).invokeIsAccessible() &&
+                buffer.release();
     }
 
 
