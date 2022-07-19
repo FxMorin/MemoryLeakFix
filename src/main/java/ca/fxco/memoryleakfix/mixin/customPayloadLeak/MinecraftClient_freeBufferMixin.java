@@ -2,6 +2,7 @@ package ca.fxco.memoryleakfix.mixin.customPayloadLeak;
 
 import ca.fxco.memoryleakfix.MemoryLeakFix;
 import ca.fxco.memoryleakfix.extensions.ExtendPacketByteBuf;
+import io.netty.buffer.AbstractReferenceCountedByteBuf;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -21,7 +22,8 @@ public class MinecraftClient_freeBufferMixin {
 
     // Make sure that the there is a reference to release first!
     private boolean tryRelease(PacketByteBuf buffer) {
-        return ((ExtendPacketByteBuf)buffer).isAccessible() && buffer.release();
+        if (((ExtendPacketByteBuf)buffer).getParent() instanceof AbstractReferenceCountedByteBuf) return true;
+        return buffer.refCnt() == 0 && buffer.release();
     }
 
 
