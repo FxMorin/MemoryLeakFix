@@ -1,9 +1,9 @@
 package ca.fxco.memoryleakfix;
 
-import io.netty.buffer.ByteBuf;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
+import net.minecraft.network.PacketByteBuf;
 import org.spongepowered.asm.logging.ILogger;
 import org.spongepowered.asm.logging.LoggerAdapterDefault;
 import org.spongepowered.asm.mixin.MixinEnvironment;
@@ -15,7 +15,7 @@ import java.util.*;
 
 public class MemoryLeakFix implements ModInitializer {
 
-    public static final Set<ByteBuf> BUFFERS_TO_CLEAR = Collections.synchronizedSet(new HashSet<>());
+    public static final Set<PacketByteBuf> BUFFERS_TO_CLEAR = Collections.synchronizedSet(new HashSet<>());
 
     @Override
     public void onInitialize() {}
