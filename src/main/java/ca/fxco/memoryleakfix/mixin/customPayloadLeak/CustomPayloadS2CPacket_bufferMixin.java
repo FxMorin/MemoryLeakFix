@@ -18,7 +18,7 @@ public class CustomPayloadS2CPacket_bufferMixin {
      * The issue here is that for Custom Payload packets, the netty buffer is never freed.
      * Unlike the bug report states [MC-121884](https://bugs.mojang.com/browse/MC-121884)
      * You cannot simply release the packet once it's been applied, since packets are sometimes used between
-     * multiple apply calls,this can lead to multiple issues.
+     * multiple apply calls, this can lead to multiple issues.
      *
      * Therefore, what we do is store them (they are not going to unload anyway) and then free them later in the tick.
      *
