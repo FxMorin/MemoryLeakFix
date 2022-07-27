@@ -15,14 +15,14 @@ public class Main_clientLoadedMixin {
 
 
     @Inject(
-            method = "main([Ljava/lang/String;)V",
+            method = "main([Ljava/lang/String;Z)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/MinecraftClient;shouldRenderAsync()Z",
                     shift = At.Shift.BEFORE
             )
     )
-    private static void loadAllMixinsThenShouldRenderAsync(String[] args, CallbackInfo ci) {
+    private static void loadAllMixinsThenShouldRenderAsync(String[] args, boolean optimizeDataFixer, CallbackInfo ci) {
         MemoryLeakFix.forceLoadAllMixinsAndClearSpongePoweredCache();
     }
 }
