@@ -17,7 +17,7 @@ For the best performance & memory usage, I recommend using this mod with:
 
 ---
 
-<a href="https://client.kinetichosting.net/aff.php?aff=42"><img alt="Kinetic Hosting" src="https://media.discordapp.net/attachments/1058184491476197427/1058799080672854126/FX.png"></a>
+<a href="https://client.kinetichosting.net/aff.php?aff=42"><img alt="Kinetic Hosting" src="https://fxco.ca/assets/Mod_Banner.png"></a>
 
 ---
   
