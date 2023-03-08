@@ -20,10 +20,13 @@ public class MinecraftClient_freeBufferMixin {
      * Free the packets at the end of the tick
      */
 
-    // Make sure that the there is a reference to release first!
-    private boolean tryRelease(PacketByteBuf buffer) {
-        if (((ExtendPacketByteBuf)buffer).getParent() instanceof AbstractReferenceCountedByteBuf) return true;
-        return buffer.refCnt() == 0 && buffer.release();
+    // Make sure that there is a reference to release first!
+    private boolean tryRelease(PacketByteBuf buf) {
+        if (buf instanceof ExtendPacketByteBuf extBuf &&
+                !(extBuf.getParent() instanceof AbstractReferenceCountedByteBuf)) {
+            return buf.refCnt() == 0 && buf.release();
+        }
+        return true;
     }
 
 
