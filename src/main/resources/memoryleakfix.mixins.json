@@ -4,7 +4,9 @@
   "package": "ca.fxco.memoryleakfix.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "biomeTemperatureLeak.Biome_threadLocalMixin"
+    "biomeTemperatureLeak.Biome_threadLocalMixin",
+    "entityMemoriesLeak.Brain_clearMemoriesMixin",
+    "entityMemoriesLeak.LivingEntity_clearMemoriesMixin"
   ],
   "server": [
     "spongePoweredLeak.MinecraftServer_loadWorldMixin"
