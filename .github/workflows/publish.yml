@@ -22,6 +22,9 @@ jobs:
         run: ./gradlew build
       - uses: Kir-Antipov/mc-publish@v3.1
         with:
+          loaders: |
+            fabric
+            quilt
           modrinth-featured: true
           modrinth-unfeature-mode: subset
           version-type: release
