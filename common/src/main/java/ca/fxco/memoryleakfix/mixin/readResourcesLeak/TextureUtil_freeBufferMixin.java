@@ -24,6 +24,7 @@ public abstract class TextureUtil_freeBufferMixin {
      * For example, if I load a 4k resource pack a single texture failing could lose me 3.9mb This happens any time the
      * textures are reloaded. If it's the latter, it could constantly be leaking some textures.
      *
+     *
      * By Fx Morin - thanks to Icyllis Milica for [MC-226729](https://bugs.mojang.com/browse/MC-226729)
      */
 
