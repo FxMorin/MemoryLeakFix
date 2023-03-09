@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ca.fxco.memoryleakfix.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "customPayloadLeak.CustomPayloadS2CPacket_bufferMixin",
+    "customPayloadLeak.MinecraftClient_freeBufferMixin",
+    "customPayloadLeak.PacketByteBufAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "plugin": "ca.fxco.memoryleakfix.config.MemoryLeakFixMixinConfigPlugin"
+}

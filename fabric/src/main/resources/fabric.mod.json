@@ -21,7 +21,8 @@
     ]
   },
   "mixins": [
-    "memoryleakfix.mixins.json"
+    "memoryleakfix.mixins.json",
+    "memoryleakfix-fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.11",

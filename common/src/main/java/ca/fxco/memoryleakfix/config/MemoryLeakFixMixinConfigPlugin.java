@@ -30,13 +30,13 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         AnnotationNode annotationNode = getMinecraftRequirement(mixinClassName);
         if (annotationNode != null) {
             String minVersion = Annotations.getValue(annotationNode, "minVersion");
-            if (minVersion != null) {
+            if (minVersion != null && !minVersion.isEmpty()) {
                 if (MemoryLeakFixExpectPlatform.compareMinecraftToVersion(minVersion) < 0) {
                     return false;
                 }
             }
             String maxVersion = Annotations.getValue(annotationNode, "maxVersion");
-            if (maxVersion != null) {
+            if (maxVersion != null && !maxVersion.isEmpty()) {
                 if (MemoryLeakFixExpectPlatform.compareMinecraftToVersion(maxVersion) > 0) {
                     return false;
                 }
