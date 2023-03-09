@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class Entity_clearMemoriesMixin {
 
     // method_5650 is the intermediary name which is needed because in older Minecraft versions the parameters of the method were different
-    @Inject(method = {"remove", "method_5650"}, at = @At("TAIL"))
+    @Inject(method = {"remove", "method_5650"}, at = @At("TAIL"), allow = 1)
     protected void memoryLeakFix$OnEntityRemoved(CallbackInfo ci) {
     }
 }
