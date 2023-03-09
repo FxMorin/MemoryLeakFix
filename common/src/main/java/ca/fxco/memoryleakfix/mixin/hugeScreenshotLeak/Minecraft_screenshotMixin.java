@@ -2,11 +2,11 @@ package ca.fxco.memoryleakfix.mixin.hugeScreenshotLeak;
 
 import ca.fxco.memoryleakfix.config.MinecraftRequirement;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.mojang.blaze3d.platform.GlDebugInfo;
+import com.mojang.blaze3d.platform.GlUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,34 +17,32 @@ import java.nio.ByteBuffer;
 
 @MinecraftRequirement(minVersion = "1.17")
 @Environment(EnvType.CLIENT)
-@Mixin(MinecraftClient.class)
-public abstract class MinecraftClient_screenshotMixin {
+@Mixin(Minecraft.class)
+public abstract class Minecraft_screenshotMixin {
 
     @Nullable
     private ByteBuffer memoryLeakFix$screenshotByteBuffer;
 
-
     @ModifyExpressionValue(
-            method = "takeHugeScreenshot",
+            method = "grabHugeScreenshot",
             at = @At(
                     value = "INVOKE",
-                    target = "Lcom/mojang/blaze3d/platform/GlDebugInfo;allocateMemory(I)Ljava/nio/ByteBuffer;"
+                    target = "Lcom/mojang/blaze3d/platform/GlUtil;allocateMemory(I)Ljava/nio/ByteBuffer;"
             )
     )
     private ByteBuffer memoryLeakFix$captureByteBuffer(ByteBuffer byteBuf) {
         return this.memoryLeakFix$screenshotByteBuffer = byteBuf;
     }
 
-
     @Inject(
-            method = "takeHugeScreenshot",
+            method = "grabHugeScreenshot",
             at = @At(
                     value = "CONSTANT",
                     args = "stringValue=screenshot.failure"
             )
     )
-    private void memoryLeakFix$freeByteBuffer(CallbackInfoReturnable<Text> cir) {
-        GlDebugInfo.freeMemory(this.memoryLeakFix$screenshotByteBuffer);
+    private void memoryLeakFix$freeByteBuffer(CallbackInfoReturnable<Component> cir) {
+        GlUtil.freeMemory(this.memoryLeakFix$screenshotByteBuffer);
         this.memoryLeakFix$screenshotByteBuffer = null;
     }
 }

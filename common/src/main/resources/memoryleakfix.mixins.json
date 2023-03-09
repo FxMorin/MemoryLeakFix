@@ -4,13 +4,13 @@
   "package": "ca.fxco.memoryleakfix.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "hugeScreenshotLeak.MinecraftClient_screenshotMixin",
+    "hugeScreenshotLeak.Minecraft_screenshotMixin",
     "readResourcesLeak.TextureUtil_freeBufferMixin",
-    "spongePoweredLeak.MinecraftClient_clientLoadedMixin",
+    "spongePoweredLeak.Minecraft_clientLoadedMixin",
     "targetEntityLeak.MinecraftClient_targetClearMixin"
   ],
   "server": [
-    "spongePoweredLeak.MinecraftServer_loadWorldMixin"
+    "spongePoweredLeak.MinecraftServer_serverLoadedMixin"
   ],
   "mixins": [
     "biomeTemperatureLeak.Biome_threadLocalMixin",

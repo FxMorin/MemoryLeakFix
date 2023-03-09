@@ -1,6 +1,5 @@
 package ca.fxco.memoryleakfix;
 
-import net.minecraft.network.PacketByteBuf;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.logging.ILogger;

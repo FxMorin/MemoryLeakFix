@@ -2,9 +2,9 @@ package ca.fxco.memoryleakfix.mixin.targetEntityLeak;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.hit.HitResult;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,28 +13,28 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public abstract class MinecraftClient_targetClearMixin {
 
     @Shadow
     @Nullable
-    public Entity targetedEntity;
+    public Entity crosshairPickEntity;
 
     @Shadow
     @Nullable
-    public HitResult crosshairTarget;
+    public HitResult hitResult;
 
 
     @Inject(
-            method = "reset",
+            method = "updateScreenAndTick",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/MinecraftClient;render(Z)V",
+                    target = "Lnet/minecraft/client/Minecraft;runTick(Z)V",
                     shift = At.Shift.BEFORE
             )
     )
     private void memoryLeakFix$resetTarget(CallbackInfo ci) {
-        this.targetedEntity = null;
-        this.crosshairTarget = null;
+        this.crosshairPickEntity = null;
+        this.hitResult = null;
     }
 }
