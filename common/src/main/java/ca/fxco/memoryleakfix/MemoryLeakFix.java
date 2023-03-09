@@ -16,7 +16,6 @@ public class MemoryLeakFix {
 
     public static final String MOD_ID = "memoryleakfix";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
-    public static final Set<PacketByteBuf> BUFFERS_TO_CLEAR = Collections.synchronizedSet(new HashSet<>());
 
     public static void init() {}
 

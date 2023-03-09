@@ -1,6 +1,6 @@
 package ca.fxco.memoryleakfix.mixin.customPayloadLeak;
 
-import ca.fxco.memoryleakfix.MemoryLeakFix;
+import ca.fxco.memoryleakfix.fabric.MemoryLeakFixFabric;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.PacketByteBuf;
@@ -42,6 +42,6 @@ public abstract class CustomPayloadS2CPacket_bufferMixin {
             at = @At("RETURN")
     )
     private void memoryLeakFix$storeBufferToClear(CallbackInfo ci) {
-        MemoryLeakFix.BUFFERS_TO_CLEAR.add(this.data);
+        MemoryLeakFixFabric.BUFFERS_TO_CLEAR.add(this.data);
     }
 }

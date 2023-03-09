@@ -1,6 +1,6 @@
 package ca.fxco.memoryleakfix.mixin.customPayloadLeak;
 
-import ca.fxco.memoryleakfix.MemoryLeakFix;
+import ca.fxco.memoryleakfix.fabric.MemoryLeakFixFabric;
 import io.netty.buffer.AbstractReferenceCountedByteBuf;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -33,6 +33,6 @@ public abstract class MinecraftClient_freeBufferMixin {
             at = @At("RETURN")
     )
     private void memoryLeakFix$releaseBuffersAfterTick(CallbackInfo ci) {
-        MemoryLeakFix.BUFFERS_TO_CLEAR.removeIf(this::memoryLeakFix$tryRelease);
+        MemoryLeakFixFabric.BUFFERS_TO_CLEAR.removeIf(this::memoryLeakFix$tryRelease);
     }
 }
