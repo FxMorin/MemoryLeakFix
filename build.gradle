@@ -43,4 +43,8 @@ allprojects {
     java {
         withSourcesJar()
     }
+
+    jar {
+        from rootProject.file("LICENSE")
+    }
 }
