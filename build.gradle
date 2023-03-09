@@ -1,73 +1,46 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
-    id 'io.github.juuxel.loom-quiltflower' version '1.7.1'
-    id 'maven-publish'
-}
-
-runClient.doFirst {
-    args = ['--username', "PR0CESS", '--uuid', UUID.randomUUID()]
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "dev.architectury.loom" version "0.12.0-SNAPSHOT" apply false
 }
 
 repositories {
-    mavenCentral()
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name
-version = project.minecraft_version+'-'+project.mod_version
-group = project.maven_group
-
-dependencies {
-    //to change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+architectury {
+    minecraft = rootProject.minecraft_version
 }
 
-processResources {
-    inputs.property "version", project.version
+subprojects {
+    apply plugin: "dev.architectury.loom"
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        // The following line declares the mojmap mappings, you may use other mappings as well
+        // mappings loom.officialMojangMappings()
+        // The following line declares the yarn mappings you may select this one as well.
+        mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    // ensure that the encoding is set to UTF-8, no matter what the system default is
-    // this fixes some edge cases with special characters not displaying correctly
-    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-    // If Javadoc is generated, this must be specified in that task too.
-    it.options.encoding = "UTF-8"
-    it.options.release = 17
-}
+allprojects {
+    apply plugin: "java"
+    apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
 
-java {
-    withSourcesJar()
-}
+    archivesBaseName = rootProject.archives_base_name
+    version = rootProject.mod_version
+    group = rootProject.maven_group
 
-jar {
-    from "LICENSE"
-}
-
-// configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(jar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
-    }
-
-    // select the repositories you want to publish to
     repositories {
-        // uncomment to publish to the local maven
-        // mavenLocal()
+        maven { url 'https://jitpack.io' }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.release = 17
+    }
+
+    java {
+        withSourcesJar()
     }
 }
