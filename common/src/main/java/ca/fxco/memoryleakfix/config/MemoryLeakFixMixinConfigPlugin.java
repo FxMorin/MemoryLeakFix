@@ -25,22 +25,17 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        AnnotationNode annotationNode = getMinecraftRequirement(mixinClassName);
-        if (annotationNode != null) {
-            String minVersion = Annotations.getValue(annotationNode, "minVersion");
-            if (minVersion != null && !minVersion.isEmpty()) {
-                if (MemoryLeakFixExpectPlatform.compareMinecraftToVersion(minVersion) < 0) {
-                    return false;
+        AnnotationNode minecraftRequirement = getMinecraftRequirement(mixinClassName);
+        if (minecraftRequirement != null) {
+            for (AnnotationNode versionRange : (Iterable<AnnotationNode>) Annotations.getValue(minecraftRequirement)) {
+                if (isVersionRangeValid(versionRange)) {
+                    return true;
                 }
             }
-            String maxVersion = Annotations.getValue(annotationNode, "maxVersion");
-            if (maxVersion != null && !maxVersion.isEmpty()) {
-                if (MemoryLeakFixExpectPlatform.compareMinecraftToVersion(maxVersion) > 0) {
-                    return false;
-                }
-            }
+            return false;
         }
         return true;
     }
@@ -69,5 +64,21 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private boolean isVersionRangeValid(AnnotationNode versionRange) {
+        String minVersion = Annotations.getValue(versionRange, "minVersion");
+        if (minVersion != null && !minVersion.isEmpty()) {
+            if (MemoryLeakFixExpectPlatform.compareMinecraftToVersion(minVersion) < 0) {
+                return false;
+            }
+        }
+        String maxVersion = Annotations.getValue(versionRange, "maxVersion");
+        if (maxVersion != null && !maxVersion.isEmpty()) {
+            if (MemoryLeakFixExpectPlatform.compareMinecraftToVersion(maxVersion) > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

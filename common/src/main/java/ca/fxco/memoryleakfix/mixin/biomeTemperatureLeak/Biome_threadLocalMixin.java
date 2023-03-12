@@ -1,6 +1,7 @@
 package ca.fxco.memoryleakfix.mixin.biomeTemperatureLeak;
 
 import ca.fxco.memoryleakfix.config.MinecraftRequirement;
+import ca.fxco.memoryleakfix.config.VersionRange;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import it.unimi.dsi.fastutil.longs.Long2FloatLinkedOpenHashMap;
@@ -10,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.function.Supplier;
 
-@MinecraftRequirement(minVersion = "1.14.4")
+@MinecraftRequirement(@VersionRange(minVersion = "1.14.4"))
 @Mixin(Biome.class)
 public abstract class Biome_threadLocalMixin {
 

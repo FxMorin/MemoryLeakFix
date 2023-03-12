@@ -1,6 +1,7 @@
 package ca.fxco.memoryleakfix.mixin.entityMemoriesLeak;
 
 import ca.fxco.memoryleakfix.config.MinecraftRequirement;
+import ca.fxco.memoryleakfix.config.VersionRange;
 import ca.fxco.memoryleakfix.extensions.ExtendBrain;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
@@ -13,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * This was fixed by mojang in 1.19.4
  */
 
-@MinecraftRequirement(maxVersion = "1.19.3")
+@MinecraftRequirement(@VersionRange(maxVersion = "1.19.3"))
 @Mixin(LivingEntity.class)
 public abstract class LivingEntity_clearMemoriesMixin extends Entity_clearMemoriesMixin {
 

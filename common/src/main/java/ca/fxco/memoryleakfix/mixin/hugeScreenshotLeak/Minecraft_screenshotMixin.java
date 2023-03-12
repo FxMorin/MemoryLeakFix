@@ -1,6 +1,7 @@
 package ca.fxco.memoryleakfix.mixin.hugeScreenshotLeak;
 
 import ca.fxco.memoryleakfix.config.MinecraftRequirement;
+import ca.fxco.memoryleakfix.config.VersionRange;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.platform.GlUtil;
 import net.fabricmc.api.EnvType;
@@ -15,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import javax.annotation.Nullable;
 import java.nio.ByteBuffer;
 
-@MinecraftRequirement(minVersion = "1.17")
+@MinecraftRequirement(@VersionRange(minVersion = "1.17.0"))
 @Environment(EnvType.CLIENT)
 @Mixin(Minecraft.class)
 public abstract class Minecraft_screenshotMixin {

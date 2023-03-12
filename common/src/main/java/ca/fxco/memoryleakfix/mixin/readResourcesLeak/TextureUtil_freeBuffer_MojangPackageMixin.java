@@ -1,25 +1,27 @@
 package ca.fxco.memoryleakfix.mixin.readResourcesLeak;
 
 import ca.fxco.memoryleakfix.config.MinecraftRequirement;
+import ca.fxco.memoryleakfix.config.VersionRange;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.platform.TextureUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.lwjgl.system.MemoryUtil;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Coerce;
 
 import java.nio.ByteBuffer;
-import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.Channel;
 
-// class_4536 is the intermediary class name of TextureUtil in pre 1.17,
-// where the class was still part of the net.minecraft package, method_24962 is the equivalent of readResource
-@MinecraftRequirement(maxVersion = "1.16.5")
-@Pseudo
+@MinecraftRequirement({
+        @VersionRange(maxVersion = "1.14.4"),
+        @VersionRange(minVersion = "1.17.0")
+})
 @Environment(EnvType.CLIENT)
-@Mixin(targets = "net/minecraft/class_4536", remap = false)
-public abstract class TextureUtil_freeBufferMixin {
+@Mixin(value = TextureUtil.class, remap = false)
+public abstract class TextureUtil_freeBuffer_MojangPackageMixin {
 
     /*
      * This fixes memory leaks under 2 conditions. If you are reloading a pack and it crashes, or if a mod changes how
@@ -31,14 +33,19 @@ public abstract class TextureUtil_freeBufferMixin {
      */
 
     @WrapOperation(
-            method = "method_24962",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ljava/nio/channels/ReadableByteChannel;read(Ljava/nio/ByteBuffer;)I"
-            ),
-            remap = false
+            method = "readResource(Ljava/io/InputStream;)Ljava/nio/ByteBuffer;",
+            at = {
+                    @At(
+                            value = "INVOKE",
+                            target = "Ljava/nio/channels/FileChannel;read(Ljava/nio/ByteBuffer;)I"
+                    ),
+                    @At(
+                            value = "INVOKE",
+                            target = "Ljava/nio/channels/ReadableByteChannel;read(Ljava/nio/ByteBuffer;)I"
+                    )
+            }
     )
-    private static int memoryLeakFix$readResourceWithoutLeak(ReadableByteChannel channel, ByteBuffer byteBuf,
+    private static int memoryLeakFix$readResourceWithoutLeak(@Coerce Channel channel, ByteBuffer byteBuf,
                                                              Operation<Integer> original) {
         try {
             return original.call(channel, byteBuf);
