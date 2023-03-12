@@ -45,7 +45,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
     // MixinExtras
-    annotationProcessor(include(forgeRuntimeLibrary(implementation("com.github.LlamaLad7:MixinExtras:${rootProject.mixinextras_version}"))))
+    shadowCommon("com.github.LlamaLad7:MixinExtras:${rootProject.mixinextras_version}")
 }
 
 processResources {
