@@ -23,6 +23,9 @@ loom {
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
     }
      */
+    forge {
+        mixinConfig "memoryleakfix.mixins.json"
+    }
 }
 
 configurations {
