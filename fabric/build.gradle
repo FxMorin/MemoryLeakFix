@@ -10,8 +10,6 @@ architectury {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-archivesBaseName += "-fabric"
-
 loom {
     // accessWidenerPath = project(":common").loom.accessWidenerPath
 }
