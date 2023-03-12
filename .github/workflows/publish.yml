@@ -20,14 +20,67 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - uses: Kir-Antipov/mc-publish@v3.1
+      - name: Publish Fabric
+        uses: Kir-Antipov/mc-publish@v3.2
         with:
+          files-primary: fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
+          files-secondary: fabric/build/libs/*-@(dev|sources|javadoc).jar
           loaders: |
             fabric
             quilt
+          game-versions: |
+            1.14.4
+            1.15.2
+            1.16.1
+            1.16.5
+            1.17.1
+            1.18.0
+            1.18.1
+            1.18.2
+            1.19.0
+            1.19.1
+            1.19.2
+            1.19.3
+          java: |
+            8
+            16
+            17
           modrinth-featured: true
-          modrinth-unfeature-mode: subset
-          version-type: release
+          modrinth-unfeature-mode: any
+          version-type: beta
+          version-resolver: releases
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          retry-attempts: 2
+          retry-delay: 10000
+          fail-mode: skip
+      - name: Publish Forge
+        uses: Kir-Antipov/mc-publish@v3.2
+        with:
+          files-primary: forge/build/libs/!(*-@(dev|sources|javadoc)).jar
+          files-secondary: forge/build/libs/*-@(dev|sources|javadoc).jar
+          loaders: forge
+          game-versions: |
+            1.14.4
+            1.15.2
+            1.16.1
+            1.16.5
+            1.17.1
+            1.18.0
+            1.18.1
+            1.18.2
+            1.19.0
+            1.19.1
+            1.19.2
+            1.19.3
+          java: |
+            8
+            16
+            17
+          modrinth-featured: true
+          modrinth-unfeature-mode: any
+          version-type: beta
           version-resolver: releases
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
