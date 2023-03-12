@@ -4,6 +4,7 @@ import ca.fxco.memoryleakfix.MemoryLeakFix;
 import ca.fxco.memoryleakfix.MemoryLeakFixExpectPlatform;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.Version;
+import net.fabricmc.loader.api.VersionParsingException;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.network.FriendlyByteBuf;
 import org.spongepowered.asm.logging.ILogger;
@@ -25,7 +26,14 @@ public class MemoryLeakFixFabric implements ModInitializer {
     }
 
     public static void forceLoadAllMixinsAndClearSpongePoweredCache() {
-        if (Version.parse(FabricLoaderImpl.VERSION).compareTo(Version.parse("0.14.15")) < 0) { // Must be fabric loader version smaller than v0.14.14. Patched in v0.14.15
+        try {
+            internalForceLoadAllMixinsAndClearSpongePoweredCache();
+        } catch (VersionParsingException ignored) {}
+    }
+
+    private static void internalForceLoadAllMixinsAndClearSpongePoweredCache() throws VersionParsingException {
+        // Must be fabric loader version smaller than v0.14.14. Patched in v0.14.15
+        if (Version.parse(FabricLoaderImpl.VERSION).compareTo(Version.parse("0.14.15")) < 0) {
             MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Attempting to ForceLoad All Mixins and clear cache");
             silenceAuditLogger();
             MixinEnvironment.getCurrentEnvironment().audit();
