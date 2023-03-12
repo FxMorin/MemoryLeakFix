@@ -6,6 +6,8 @@ import net.minecraftforge.fml.loading.FMLLoader;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
+import java.lang.reflect.Field;
+
 @SuppressWarnings("unused")
 public class MemoryLeakFixExpectPlatformImpl {
 
@@ -20,7 +22,9 @@ public class MemoryLeakFixExpectPlatformImpl {
         } catch (Exception e) {
             try {
                 // old forge
-                mcVersion = (String) FMLLoader.class.getField("mcVersion").get(null);
+                Field field = FMLLoader.class.getDeclaredField("mcVersion");
+                field.setAccessible(true);
+                mcVersion = (String) field.get(null);
             } catch (Exception ex) {
                 throw new RuntimeException("[MemoryLeakFix] Reflection failed at getting the Minecraft version from Forge", ex);
             }
