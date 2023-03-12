@@ -43,7 +43,8 @@ public abstract class TextureUtil_freeBuffer_MojangPackageMixin {
                             value = "INVOKE",
                             target = "Ljava/nio/channels/ReadableByteChannel;read(Ljava/nio/ByteBuffer;)I"
                     )
-            }
+            },
+            remap = true
     )
     private static int memoryLeakFix$readResourceWithoutLeak(@Coerce Channel channel, ByteBuffer byteBuf,
                                                              Operation<Integer> original) {
