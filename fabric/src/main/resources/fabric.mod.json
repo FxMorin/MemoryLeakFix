@@ -31,7 +31,8 @@
   "custom": {
     "mc-publish": {
       "curseforge": 627566,
-      "modrinth": "NRjRiSSD"
+      "modrinth": "NRjRiSSD",
+      "quilt": true
     }
   }
 }
