@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[43,)"
+loaderVersion = "[26,)"
 issueTrackerURL = "https://github.com/fxmorin/memoryleakfix/issues"
 license = "LGPL-2.1-only"
 

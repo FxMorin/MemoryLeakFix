@@ -11,6 +11,9 @@ architectury {
     forge()
 }
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 loom {
     /*
     accessWidenerPath = project(":common").loom.accessWidenerPath
@@ -50,11 +53,6 @@ processResources {
     filesMatching("META-INF/mods.toml") {
         expand "version": project.version
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-    options.release = 17
 }
 
 shadowJar {
