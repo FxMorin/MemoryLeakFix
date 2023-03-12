@@ -3,6 +3,8 @@ package ca.fxco.memoryleakfix.fabric;
 import ca.fxco.memoryleakfix.MemoryLeakFix;
 import ca.fxco.memoryleakfix.MemoryLeakFixExpectPlatform;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.Version;
+import net.fabricmc.loader.api.VersionParsingException;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.network.FriendlyByteBuf;
 import org.spongepowered.asm.logging.ILogger;
@@ -24,25 +26,14 @@ public class MemoryLeakFixFabric implements ModInitializer {
     }
 
     public static void forceLoadAllMixinsAndClearSpongePoweredCache() {
-        String[] fabricLoaderVersion = FabricLoaderImpl.VERSION.split("\\.");
-        if (fabricLoaderVersion.length != 3) {
-            return;
-        }
-        int major = Integer.parseInt(fabricLoaderVersion[0]);
-        if (major != 0) {
-            return;
-        }
-        int minor = Integer.parseInt(fabricLoaderVersion[1]);
-        boolean runLeakFix = false;
-        if (minor < 14) {
-            runLeakFix = true;
-        } else if (minor == 14) {
-            int patch = Integer.parseInt(fabricLoaderVersion[2]);
-            if (patch < 15) {
-                runLeakFix = true;
-            }
-        }
-        if (runLeakFix) { // Must be fabric loader version smaller than v0.14.14. Patched in v0.14.15
+        try {
+            internalForceLoadAllMixinsAndClearSpongePoweredCache();
+        } catch (VersionParsingException ignored) {}
+    }
+
+    private static void internalForceLoadAllMixinsAndClearSpongePoweredCache() throws VersionParsingException {
+        // Must be fabric loader version smaller than v0.14.14. Patched in v0.14.15
+        if (Version.parse(FabricLoaderImpl.VERSION).compareTo(Version.parse("0.14.15")) < 0) {
             MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Attempting to ForceLoad All Mixins and clear cache");
             silenceAuditLogger();
             MixinEnvironment.getCurrentEnvironment().audit();
