@@ -32,7 +32,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
     // MixinExtras
-    include(annotationProcessor(implementation("com.github.LlamaLad7:MixinExtras:${project.mixinextras_version}")))
+    include(annotationProcessor(implementation("com.github.LlamaLad7:MixinExtras:${rootProject.mixinextras_version}")))
 }
 
 processResources {
