@@ -17,7 +17,7 @@ dependencies {
     // modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
     // MixinExtras
-    include(annotationProcessor(implementation("com.github.LlamaLad7:MixinExtras:${project.mixinextras_version}")))
+    annotationProcessor(implementation("com.github.LlamaLad7:MixinExtras:${project.mixinextras_version}"))
 }
 
 publishing {
