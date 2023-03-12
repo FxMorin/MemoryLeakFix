@@ -5,8 +5,12 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "customPayloadLeak.ClientboundCustomPayloadPacket_bufferMixin",
+    "customPayloadLeak.FriendlyByteBufAccessor",
     "customPayloadLeak.Minecraft_freeBufferMixin",
-    "customPayloadLeak.FriendlyByteBufAccessor"
+    "spongePoweredLeak.Minecraft_clientLoadedMixin"
+  ],
+  "server": [
+    "spongePoweredLeak.MinecraftServer_serverLoadedMixin"
   ],
   "injectors": {
     "defaultRequire": 1
