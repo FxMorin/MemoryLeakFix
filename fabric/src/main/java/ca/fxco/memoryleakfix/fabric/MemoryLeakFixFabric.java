@@ -1,12 +1,18 @@
 package ca.fxco.memoryleakfix.fabric;
 
 import ca.fxco.memoryleakfix.MemoryLeakFix;
+import ca.fxco.memoryleakfix.MemoryLeakFixExpectPlatform;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.network.FriendlyByteBuf;
+import org.spongepowered.asm.logging.ILogger;
+import org.spongepowered.asm.logging.LoggerAdapterDefault;
+import org.spongepowered.asm.mixin.MixinEnvironment;
+import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
+import org.spongepowered.asm.mixin.transformer.ClassInfo;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class MemoryLeakFixFabric implements ModInitializer {
 
@@ -15,5 +21,77 @@ public class MemoryLeakFixFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         MemoryLeakFix.init();
+    }
+
+    public static void forceLoadAllMixinsAndClearSpongePoweredCache() {
+        String[] fabricLoaderVersion = FabricLoaderImpl.VERSION.split("\\.");
+        if (fabricLoaderVersion.length != 3) {
+            return;
+        }
+        int major = Integer.parseInt(fabricLoaderVersion[0]);
+        if (major != 0) {
+            return;
+        }
+        int minor = Integer.parseInt(fabricLoaderVersion[1]);
+        boolean runLeakFix = false;
+        if (minor < 14) {
+            runLeakFix = true;
+        } else if (minor == 14) {
+            int patch = Integer.parseInt(fabricLoaderVersion[2]);
+            if (patch < 15) {
+                runLeakFix = true;
+            }
+        }
+        if (runLeakFix) { // Must be fabric loader version smaller than v0.14.14. Patched in v0.14.15
+            MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Attempting to ForceLoad All Mixins and clear cache");
+            silenceAuditLogger();
+            MixinEnvironment.getCurrentEnvironment().audit();
+            try {
+                Field noGroupField = InjectorGroupInfo.Map.class.getDeclaredField("NO_GROUP");
+                noGroupField.setAccessible(true);
+                Object noGroup = noGroupField.get(null);
+                Field membersField = noGroup.getClass().getDeclaredField("members");
+                membersField.setAccessible(true);
+                ((List<?>) membersField.get(noGroup)).clear(); // Clear spongePoweredCache
+                emptyClassInfo();
+            } catch (NoSuchFieldException | IllegalAccessException ignored) {}
+            MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Done ForceLoad and clearing SpongePowered cache");
+        }
+    }
+
+    private static Class<?> getMixinLoggerClass() throws ClassNotFoundException {
+        Class<?> mixinLogger;
+        try {
+            mixinLogger = Class.forName("net.fabricmc.loader.impl.launch.knot.MixinLogger");
+        } catch (ClassNotFoundException err) {
+            mixinLogger = Class.forName("org.quiltmc.loader.impl.launch.knot.MixinLogger");
+        }
+        return mixinLogger;
+    }
+
+    private static void silenceAuditLogger() {
+        try {
+            Field loggerField = getMixinLoggerClass().getDeclaredField("LOGGER_MAP");
+            loggerField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<String, ILogger> loggerMap = (Map<String, ILogger>)loggerField.get(null);
+            loggerMap.put("mixin.audit", new LoggerAdapterDefault("mixin.audit"));
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static final String OBJECT = "java/lang/Object";
+
+    private static void emptyClassInfo() throws NoSuchFieldException, IllegalAccessException {
+        if (MemoryLeakFixExpectPlatform.isModLoaded("not-that-cc"))
+            return; // Crashes crafty crashes if it crashes
+        Field cacheField = ClassInfo.class.getDeclaredField("cache");
+        cacheField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        Map<String, ClassInfo> cache = ((Map<String, ClassInfo>)cacheField.get(null));
+        ClassInfo jlo = cache.get(OBJECT);
+        cache.clear();
+        cache.put(OBJECT, jlo);
     }
 }
