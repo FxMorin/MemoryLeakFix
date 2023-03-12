@@ -18,7 +18,8 @@ public class MemoryLeakFixExpectPlatformImpl {
     /**
      * This is our actual method to {@link MemoryLeakFixExpectPlatform#compareMinecraftToVersion}.
      */
+    @SuppressWarnings("OptionalGetWithoutIsPresent") // we use Optional#get over Optional#orElseThrow for java 8 compatibility, if minecraft isn't present we've got bigger issues
     public static int compareMinecraftToVersion(String version) throws VersionParsingException {
-        return FabricLoader.getInstance().getModContainer("minecraft").orElseThrow().getMetadata().getVersion().compareTo(Version.parse(version));
+        return FabricLoader.getInstance().getModContainer("minecraft").get().getMetadata().getVersion().compareTo(Version.parse(version));
     }
 }

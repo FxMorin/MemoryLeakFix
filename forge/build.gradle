@@ -52,6 +52,11 @@ processResources {
     }
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = 17
+}
+
 shadowJar {
     exclude "fabric.mod.json"
     exclude "architectury.common.json"

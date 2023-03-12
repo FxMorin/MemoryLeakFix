@@ -7,6 +7,9 @@ architectury {
     fabric()
 }
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 loom {
     // accessWidenerPath = project(":common").loom.accessWidenerPath
 }
@@ -38,6 +41,11 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = 8
 }
 
 shadowJar {

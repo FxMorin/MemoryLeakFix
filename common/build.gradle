@@ -6,6 +6,9 @@ loom {
     // accessWidenerPath = file("src/main/resources/examplemod.accesswidener")
 }
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
