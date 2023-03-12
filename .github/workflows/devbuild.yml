@@ -1,9 +1,6 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-
 name: Development Builds
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   Build:
@@ -30,4 +27,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Compiled artifacts for ${{ github.sha }}
-          path: build/libs
+          path: |
+            common/build/libs
+            fabric/build/libs
+            forge/build/libs
