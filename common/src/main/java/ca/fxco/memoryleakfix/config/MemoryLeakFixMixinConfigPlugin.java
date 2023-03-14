@@ -6,6 +6,7 @@ import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -61,7 +62,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
     }
 
-    public static void removeMixinClassNodeMethods(ClassNode classNode) {
+    public static void runMixinClassNodeRequirements(ClassNode classNode) {
         AnnotationNode minecraftRequirement = Annotations.getInvisible(classNode, MinecraftRequirement.class);
         if (minecraftRequirement != null) {
             for (AnnotationNode versionRange : (Iterable<AnnotationNode>) Annotations.getValue(minecraftRequirement)) {
@@ -79,6 +80,18 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
                 for (AnnotationNode versionRange : (Iterable<AnnotationNode>) Annotations.getValue(requirements)) {
                     if (!isVersionRangeValid(versionRange)) {
                         methodIterator.remove();
+                    }
+                }
+            }
+        }
+        Iterator<FieldNode> fieldIterator = classNode.fields.iterator();
+        while (fieldIterator.hasNext()) {
+            FieldNode node = fieldIterator.next();
+            AnnotationNode requirements = Annotations.getInvisible(node, MinecraftRequirement.class);
+            if (requirements != null) {
+                for (AnnotationNode versionRange : (Iterable<AnnotationNode>) Annotations.getValue(requirements)) {
+                    if (!isVersionRangeValid(versionRange)) {
+                        fieldIterator.remove();
                     }
                 }
             }
