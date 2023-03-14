@@ -1,15 +1,18 @@
 package ca.fxco.memoryleakfix.config;
 
+import ca.fxco.memoryleakfix.MemoryLeakFixBootstrap;
 import ca.fxco.memoryleakfix.MemoryLeakFixExpectPlatform;
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import org.spongepowered.asm.service.MixinService;
 import org.spongepowered.asm.util.Annotations;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +21,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         MixinExtrasBootstrap.init();
+        MemoryLeakFixBootstrap.init();
     }
 
     @Override
@@ -57,6 +61,30 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
     }
 
+    public static void removeMixinClassNodeMethods(ClassNode classNode) {
+        AnnotationNode minecraftRequirement = Annotations.getInvisible(classNode, MinecraftRequirement.class);
+        if (minecraftRequirement != null) {
+            for (AnnotationNode versionRange : (Iterable<AnnotationNode>) Annotations.getValue(minecraftRequirement)) {
+                if (isVersionRangeValid(versionRange)) {
+                    break;
+                }
+            }
+            return;
+        }
+        Iterator<MethodNode> methodIterator = classNode.methods.iterator();
+        while (methodIterator.hasNext()) {
+            MethodNode node = methodIterator.next();
+            AnnotationNode requirements = Annotations.getInvisible(node, MinecraftRequirement.class);
+            if (requirements != null) {
+                for (AnnotationNode versionRange : (Iterable<AnnotationNode>) Annotations.getValue(requirements)) {
+                    if (!isVersionRangeValid(versionRange)) {
+                        methodIterator.remove();
+                    }
+                }
+            }
+        }
+    }
+
     @Nullable
     private static AnnotationNode getMinecraftRequirement(String mixinClassName) {
         try {
@@ -66,7 +94,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         }
     }
 
-    private boolean isVersionRangeValid(AnnotationNode versionRange) {
+    private static boolean isVersionRangeValid(AnnotationNode versionRange) {
         String minVersion = Annotations.getValue(versionRange, "minVersion");
         if (minVersion != null && !minVersion.isEmpty()) {
             if (MemoryLeakFixExpectPlatform.compareMinecraftToVersion(minVersion) < 0) {
