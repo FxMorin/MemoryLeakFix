@@ -15,12 +15,12 @@ import org.spongepowered.asm.mixin.injection.Coerce;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channel;
 
-// class_4536 is the intermediary class name of TextureUtil in 1.15.0 - 1.16.5,
-// where the class was part of the net.minecraft package, method_24962 is the equivalent of readResource
+// class_4536 is the fabric intermediary class name of TextureUtil in 1.15.0 - 1.16.5,
+// where the class was part of the net.minecraft package, method_24962 (Fabric) / func_225684_a_ (Forge) are the equivalents of readResource
 @MinecraftRequirement(@VersionRange(minVersion = "1.15.0", maxVersion = "1.16.5"))
 @Pseudo
 @Environment(EnvType.CLIENT)
-@Mixin(targets = "net/minecraft/class_4536", remap = false)
+@Mixin(targets = {"net/minecraft/class_4536", "net/minecraft/client/renderer/texture/TextureUtil"}, remap = false)
 public abstract class TextureUtil_freeBuffer_MinecraftPackageMixin {
 
     /*
@@ -33,7 +33,7 @@ public abstract class TextureUtil_freeBuffer_MinecraftPackageMixin {
      */
 
     @WrapOperation(
-            method = "method_24962",
+            method = {"method_24962", "func_225684_a_"},
             at = {
                     @At(
                             value = "INVOKE",
