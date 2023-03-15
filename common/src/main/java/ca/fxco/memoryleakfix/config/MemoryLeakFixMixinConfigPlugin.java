@@ -1,5 +1,6 @@
 package ca.fxco.memoryleakfix.config;
 
+import ca.fxco.memoryleakfix.MemoryLeakFix;
 import ca.fxco.memoryleakfix.MemoryLeakFixBootstrap;
 import ca.fxco.memoryleakfix.MemoryLeakFixExpectPlatform;
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import org.spongepowered.asm.service.MixinService;
 import org.spongepowered.asm.util.Annotations;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -22,6 +24,8 @@ import java.util.Set;
 public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
 
     private static final Object2BooleanMap<String> MIXIN_CLASS_CACHE = new Object2BooleanArrayMap<>();
+    private static final Set<String> APPLIED_MEMORY_LEAK_FIXES = new HashSet<>();
+    private static boolean shouldMentionFixCount = true;
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -37,13 +41,37 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
     @SuppressWarnings("unchecked")
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        return MIXIN_CLASS_CACHE.computeIfAbsent(mixinClassName, mixinClassName2 ->
+        boolean shouldApply = MIXIN_CLASS_CACHE.computeIfAbsent(mixinClassName, mixinClassName2 ->
             areRequirementsMet(getMinecraftRequirement((String) mixinClassName2))
         );
+        if (shouldApply) {
+            String classGroup = mixinClassName.substring(0, mixinClassName.lastIndexOf("."));
+            APPLIED_MEMORY_LEAK_FIXES.add(classGroup.substring(classGroup.lastIndexOf(".") + 1));
+        }
+        return shouldApply;
     }
 
     @Override
     public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
+        if (shouldMentionFixCount) { // This runs after all shouldApplyMixin() checks have passed
+            shouldMentionFixCount = false;
+
+            int size = APPLIED_MEMORY_LEAK_FIXES.size();
+            if (size > 0) {
+                MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Will be applying " + size + " memory leak fixes!");
+
+                String[] groups = APPLIED_MEMORY_LEAK_FIXES.toArray(new String[]{});
+                StringBuilder fixesBuilder = new StringBuilder();
+                fixesBuilder.append("[MemoryLeakFix] Currently enabled memory leak fixes: [");
+                for (int i = 0; i < size; i++) {
+                    fixesBuilder.append(groups[i]);
+                    if (i != size - 1) {
+                        fixesBuilder.append(", ");
+                    }
+                }
+                MemoryLeakFix.LOGGER.info(fixesBuilder.append("]"));
+            }
+        }
     }
 
     @Override
