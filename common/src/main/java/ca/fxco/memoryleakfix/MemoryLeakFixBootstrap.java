@@ -5,7 +5,12 @@ import ca.fxco.memoryleakfix.config.mixinExtension.UnMixinExtension;
 
 public class MemoryLeakFixBootstrap {
 
+    private static boolean initialized;
+
     public static void init() {
-        MixinInternals.registerExtension(new UnMixinExtension());
+        if (!initialized) {
+            initialized = true;
+            MixinInternals.registerExtension(new UnMixinExtension());
+        }
     }
 }

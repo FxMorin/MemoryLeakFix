@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @MinecraftRequirement(@VersionRange(minVersion = "1.18.2", maxVersion = "1.18.2"))
 @Mixin(TagKey.class)
-public class TagKey_internerMixin {
+public abstract class TagKey_internerMixin {
 
     @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference", "InvalidInjectorMethodSignature"})
     @Redirect(

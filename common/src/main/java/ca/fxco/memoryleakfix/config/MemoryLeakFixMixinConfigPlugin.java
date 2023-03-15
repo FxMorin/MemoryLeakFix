@@ -38,7 +38,6 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         boolean shouldApply = MIXIN_CLASS_CACHE.computeIfAbsent(mixinClassName, mixinClassName2 ->
@@ -87,6 +86,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
     }
 
+    @SuppressWarnings("unchecked")
     public static void runMixinClassNodeRequirements(String className, ClassNode classNode) {
         if (!MIXIN_CLASS_CACHE.computeIfAbsent(className, className2 ->
                 areRequirementsMet(Annotations.getInvisible(classNode, MinecraftRequirement.class))
@@ -119,6 +119,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static boolean areRequirementsMet(@Nullable AnnotationNode requirements) {
         if (requirements != null) {
             for (AnnotationNode versionRange : (Iterable<AnnotationNode>) Annotations.getValue(requirements)) {

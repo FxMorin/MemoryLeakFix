@@ -2,8 +2,9 @@ package ca.fxco.memoryleakfix.mixin.drownedNavigationLeak;
 
 import ca.fxco.memoryleakfix.config.MinecraftRequirement;
 import ca.fxco.memoryleakfix.config.VersionRange;
-import ca.fxco.memoryleakfix.extensions.ExtendEntity;
-import net.minecraft.world.entity.EntityType;
+import ca.fxco.memoryleakfix.extensions.ExtendDrowned;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
@@ -20,28 +21,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Set;
 
 @MinecraftRequirement(@VersionRange(minVersion = "1.16.3", maxVersion = "1.16.5"))
+@Environment(EnvType.SERVER)
 @Mixin(Drowned.class)
-public class Drowned_navigationMixin extends Zombie implements ExtendEntity {
+public abstract class Drowned_navigationMixin extends Zombie implements ExtendDrowned {
 
     @Shadow @Final protected WaterBoundPathNavigation waterNavigation;
 
     @Shadow @Final protected GroundPathNavigation groundNavigation;
 
-    private PathNavigation originalPathNavigation;
+    private PathNavigation memoryLeakFix$originalPathNavigation;
 
     public Drowned_navigationMixin(Level level) {
         super(level);
     }
 
     @Override
-    public void onRemoveNavigation(Set<PathNavigation> navigations) {
-        navigations.remove(this.originalPathNavigation);
+    public void memoryLeakFix$onRemoveNavigation(Set<PathNavigation> navigations) {
+        navigations.remove(this.memoryLeakFix$originalPathNavigation);
         navigations.remove(this.waterNavigation);
         navigations.remove(this.groundNavigation);
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void getOriginalNavigation(EntityType<?> type, Level level, CallbackInfo ci) {
-        this.originalPathNavigation = this.getNavigation();
+    private void getOriginalNavigation(CallbackInfo ci) {
+        this.memoryLeakFix$originalPathNavigation = this.getNavigation();
     }
 }

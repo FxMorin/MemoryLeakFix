@@ -2,7 +2,9 @@ package ca.fxco.memoryleakfix.mixin.drownedNavigationLeak;
 
 import ca.fxco.memoryleakfix.config.MinecraftRequirement;
 import ca.fxco.memoryleakfix.config.VersionRange;
-import ca.fxco.memoryleakfix.extensions.ExtendEntity;
+import ca.fxco.memoryleakfix.extensions.ExtendDrowned;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -19,8 +21,9 @@ import java.util.Set;
  * This fixes: <a href="https://bugs.mojang.com/browse/MC-202246">MC-202246</a>
  */
 @MinecraftRequirement(@VersionRange(minVersion = "1.16.3", maxVersion = "1.16.5"))
+@Environment(EnvType.SERVER)
 @Mixin(ServerLevel.class)
-public class ServerLevel_navigationMixin {
+public abstract class ServerLevel_navigationMixin {
 
     @SuppressWarnings("MixinAnnotationTarget")
     @Shadow
@@ -30,6 +33,8 @@ public class ServerLevel_navigationMixin {
     @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
     @Inject(method = "onEntityRemoved", at = @At("RETURN"))
     private void removeAllPossibleDrownedNavigations(Entity entity, CallbackInfo ci) {
-        ((ExtendEntity)entity).onRemoveNavigation(navigations);
+        if (entity instanceof ExtendDrowned) {
+            ((ExtendDrowned) entity).memoryLeakFix$onRemoveNavigation(navigations);
+        }
     }
 }

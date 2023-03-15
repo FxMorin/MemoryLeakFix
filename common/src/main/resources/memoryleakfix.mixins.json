@@ -11,15 +11,12 @@
   ],
   "mixins": [
     "biomeTemperatureLeak.Biome_threadLocalMixin",
+    "drownedNavigationLeak.Drowned_navigationMixin",
+    "drownedNavigationLeak.ServerLevel_navigationMixin",
     "entityMemoriesLeak.Brain_clearMemoriesMixin",
     "entityMemoriesLeak.Entity_clearMemoriesMixin",
     "entityMemoriesLeak.LivingEntity_clearMemoriesMixin",
     "tagKeyLeak.TagKey_internerMixin"
-  ],
-  "server": [
-    "drownedNavigationLeak.Drowned_navigationMixin",
-    "drownedNavigationLeak.Entity_navigationMixin",
-    "drownedNavigationLeak.ServerLevel_navigationMixin"
   ],
   "injectors": {
     "defaultRequire": 1
