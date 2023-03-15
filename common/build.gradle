@@ -9,6 +9,10 @@ loom {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+if (minecraft_version.equals("1.16.5")) {
+    sourceSets.main.java.exclude "ca/fxco/memoryleakfix/mixin/hugeScreenshotLeak/*"
+}
+
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader

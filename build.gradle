@@ -51,4 +51,8 @@ allprojects {
     jar {
         from rootProject.file("LICENSE")
     }
+
+    if (minecraft_version.equals("1.16.5")) {
+        version += "-pre1.17"
+    }
 }
