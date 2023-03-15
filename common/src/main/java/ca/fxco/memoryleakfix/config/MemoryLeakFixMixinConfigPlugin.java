@@ -3,6 +3,8 @@ package ca.fxco.memoryleakfix.config;
 import ca.fxco.memoryleakfix.MemoryLeakFixBootstrap;
 import ca.fxco.memoryleakfix.MemoryLeakFixExpectPlatform;
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -19,6 +21,8 @@ import java.util.Set;
 
 public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
 
+    private static final Object2BooleanMap<String> MIXIN_CLASS_CACHE = new Object2BooleanArrayMap<>();
+
     @Override
     public void onLoad(String mixinPackage) {
         MixinExtrasBootstrap.init();
@@ -33,16 +37,9 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
     @SuppressWarnings("unchecked")
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        AnnotationNode minecraftRequirement = getMinecraftRequirement(mixinClassName);
-        if (minecraftRequirement != null) {
-            for (AnnotationNode versionRange : (Iterable<AnnotationNode>) Annotations.getValue(minecraftRequirement)) {
-                if (isVersionRangeValid(versionRange)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        return true;
+        return MIXIN_CLASS_CACHE.computeIfAbsent(mixinClassName, mixinClassName2 ->
+            areRequirementsMet(getMinecraftRequirement((String) mixinClassName2))
+        );
     }
 
     @Override
@@ -62,14 +59,10 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
     }
 
-    public static void runMixinClassNodeRequirements(ClassNode classNode) {
-        AnnotationNode minecraftRequirement = Annotations.getInvisible(classNode, MinecraftRequirement.class);
-        if (minecraftRequirement != null) {
-            for (AnnotationNode versionRange : (Iterable<AnnotationNode>) Annotations.getValue(minecraftRequirement)) {
-                if (isVersionRangeValid(versionRange)) {
-                    break;
-                }
-            }
+    public static void runMixinClassNodeRequirements(String className, ClassNode classNode) {
+        if (!MIXIN_CLASS_CACHE.computeIfAbsent(className, className2 ->
+                areRequirementsMet(Annotations.getInvisible(classNode, MinecraftRequirement.class))
+        )) {
             return;
         }
         Iterator<MethodNode> methodIterator = classNode.methods.iterator();
@@ -96,6 +89,18 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
                 }
             }
         }
+    }
+
+    private static boolean areRequirementsMet(@Nullable AnnotationNode requirements) {
+        if (requirements != null) {
+            for (AnnotationNode versionRange : (Iterable<AnnotationNode>) Annotations.getValue(requirements)) {
+                if (isVersionRangeValid(versionRange)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
     }
 
     @Nullable

@@ -21,7 +21,7 @@ public class UnMixinExtension implements IExtension {
     @Override
     public void preApply(ITargetClassContext context) {
         for (Pair<IMixinInfo, ClassNode> pair : MixinInternals.getMixinsFor(context)) {
-            MemoryLeakFixMixinConfigPlugin.runMixinClassNodeRequirements(pair.getRight());
+            MemoryLeakFixMixinConfigPlugin.runMixinClassNodeRequirements(pair.getLeft().getClassName(), pair.getRight());
         }
     }
 
