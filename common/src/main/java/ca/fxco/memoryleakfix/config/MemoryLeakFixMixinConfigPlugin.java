@@ -58,17 +58,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
             int size = APPLIED_MEMORY_LEAK_FIXES.size();
             if (size > 0) {
                 MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Will be applying " + size + " memory leak fixes!");
-
-                String[] groups = APPLIED_MEMORY_LEAK_FIXES.toArray(new String[]{});
-                StringBuilder fixesBuilder = new StringBuilder();
-                fixesBuilder.append("[MemoryLeakFix] Currently enabled memory leak fixes: [");
-                for (int i = 0; i < size; i++) {
-                    fixesBuilder.append(groups[i]);
-                    if (i != size - 1) {
-                        fixesBuilder.append(", ");
-                    }
-                }
-                MemoryLeakFix.LOGGER.info(fixesBuilder.append("]"));
+                MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Currently enabled memory leak fixes: " + APPLIED_MEMORY_LEAK_FIXES);
             }
         }
     }

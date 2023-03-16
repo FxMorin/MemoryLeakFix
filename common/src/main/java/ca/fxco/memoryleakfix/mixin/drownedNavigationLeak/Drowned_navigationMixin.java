@@ -21,7 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Set;
 
 @MinecraftRequirement(@VersionRange(minVersion = "1.16.3", maxVersion = "1.16.5"))
-@Environment(EnvType.SERVER)
 @Mixin(Drowned.class)
 public abstract class Drowned_navigationMixin extends Zombie implements ExtendDrowned {
 
