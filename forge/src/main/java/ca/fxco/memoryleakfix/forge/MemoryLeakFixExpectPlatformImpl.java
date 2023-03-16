@@ -45,4 +45,18 @@ public class MemoryLeakFixExpectPlatformImpl {
     public static int compareMinecraftToVersion(String version) {
         return MCVERSION.compareTo(new DefaultArtifactVersion(version));
     }
+
+    /**
+     * This is our actual method to {@link MemoryLeakFixExpectPlatform#getMappingType}.
+     */
+    public static String getMappingType() {
+        return MCVERSION.compareTo(new DefaultArtifactVersion("1.16.5")) > 0 ? "forge" : "mcp";
+    }
+
+    /**
+     * This is our actual method to {@link MemoryLeakFixExpectPlatform#isDevEnvironment}.
+     */
+    public static boolean isDevEnvironment() {
+        return !FMLLoader.isProduction();
+    }
 }

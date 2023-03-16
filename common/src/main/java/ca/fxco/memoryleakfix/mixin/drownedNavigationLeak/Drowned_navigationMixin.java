@@ -3,8 +3,6 @@ package ca.fxco.memoryleakfix.mixin.drownedNavigationLeak;
 import ca.fxco.memoryleakfix.config.MinecraftRequirement;
 import ca.fxco.memoryleakfix.config.VersionRange;
 import ca.fxco.memoryleakfix.extensions.ExtendDrowned;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;

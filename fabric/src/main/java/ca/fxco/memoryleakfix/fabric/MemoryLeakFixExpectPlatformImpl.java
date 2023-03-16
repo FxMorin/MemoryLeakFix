@@ -22,4 +22,18 @@ public class MemoryLeakFixExpectPlatformImpl {
     public static int compareMinecraftToVersion(String version) throws VersionParsingException {
         return FabricLoader.getInstance().getModContainer("minecraft").get().getMetadata().getVersion().compareTo(Version.parse(version));
     }
+
+    /**
+     * This is our actual method to {@link MemoryLeakFixExpectPlatform#getMappingType}.
+     */
+    public static String getMappingType() {
+        return "fabric";
+    }
+
+    /**
+     * This is our actual method to {@link MemoryLeakFixExpectPlatform#isDevEnvironment}.
+     */
+    public static boolean isDevEnvironment() {
+        return FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
 }

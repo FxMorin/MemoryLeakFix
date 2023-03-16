@@ -14,4 +14,14 @@ public class MemoryLeakFixExpectPlatform {
     public static int compareMinecraftToVersion(String version) {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static String getMappingType() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static boolean isDevEnvironment() {
+        throw new AssertionError();
+    }
 }
