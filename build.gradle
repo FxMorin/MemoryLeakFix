@@ -31,7 +31,7 @@ allprojects {
     apply plugin: "architectury-plugin"
     apply plugin: "maven-publish"
 
-    archivesBaseName = rootProject.archives_base_name + "-" + project.name
+    archivesBaseName = rootProject.archives_base_name + ((System.getProperty("build16") != null && System.getProperty("build16")) ? "-" + project.name : "")
     version = rootProject.mod_version
     group = rootProject.maven_group
 
