@@ -14,7 +14,7 @@ architectury {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-if (!minecraft_version.equals("1.16.5")) {
+if (!(System.getProperty("build16") != null && System.getProperty("build16"))) {
     sourceSets.main.java.exclude "ca/fxco/memoryleakfix/mixin/hugeScreenshotLeak/*", "ca/fxco/memoryleakfix/mixin/tagKeyLeak/*"
 }
 
@@ -41,7 +41,7 @@ configurations {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    forge "net.minecraftforge:forge:${(System.getProperty("build16") != null && System.getProperty("build16")) ? rootProject.forge_version_16 : rootProject.forge_version}"
     // Remove the next line if you don't want to depend on the API
     // modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
