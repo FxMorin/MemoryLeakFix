@@ -32,7 +32,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
     // prevent running custom annotations twice
     private static final Set<String> CUSTOM_ANNOTATION_CLASSES = new HashSet<>();
 
-    private static final boolean VERBOSE = true && MemoryLeakFixExpectPlatform.isDevEnvironment();
+    private static final boolean VERBOSE = false;
 
     @Override
     public void onLoad(String mixinPackage) {
