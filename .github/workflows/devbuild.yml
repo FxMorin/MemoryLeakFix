@@ -30,6 +30,5 @@ jobs:
         with:
           name: Compiled artifacts for ${{ github.sha }}
           path: |
-            common/build/libs
             fabric/build/libs
             forge/build/libs
