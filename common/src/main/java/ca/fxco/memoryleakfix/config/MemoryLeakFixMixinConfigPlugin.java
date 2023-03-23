@@ -156,7 +156,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
                 }
             }
         }
-        if (fieldsRemapping.size() > 0) {
+        if (!fieldsRemapping.isEmpty()) {
             // Batch all the field changes together, so we only need to do the method search once
             executeRemapAnnotation(className, classNode, fieldsRemapping);
         }
@@ -229,7 +229,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         if (remap == null) {
             return;
         }
-        boolean excludeDev = Annotations.getValue(remap, "excludeDev");
+        boolean excludeDev = Annotations.getValue(remap, "excludeDev", Boolean.FALSE);
         if (excludeDev && MemoryLeakFixExpectPlatform.isDevEnvironment()) {
             if (VERBOSE) {
                 System.out.println("Remap annotation excluded from dev: " + node.name + node.desc);
@@ -240,7 +240,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
             System.out.println("Remap annotation found for: " + node.name + node.desc);
         }
         List<String> mapping = Annotations.getValue(remap, MemoryLeakFixExpectPlatform.getMappingType());
-        if (mapping != null && mapping.size() > 0) {
+        if (mapping != null && !mapping.isEmpty()) {
             if (VERBOSE) {
                 System.out.println("Attempting to remap method to: " + mapping);
             }
