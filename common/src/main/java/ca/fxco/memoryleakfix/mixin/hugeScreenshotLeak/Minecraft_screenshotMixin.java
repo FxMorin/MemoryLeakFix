@@ -3,6 +3,8 @@ package ca.fxco.memoryleakfix.mixin.hugeScreenshotLeak;
 import ca.fxco.memoryleakfix.config.MinecraftRequirement;
 import ca.fxco.memoryleakfix.config.VersionRange;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.mojang.blaze3d.platform.GlUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,16 +15,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import javax.annotation.Nullable;
 import java.nio.ByteBuffer;
 
 @MinecraftRequirement(@VersionRange(minVersion = "1.17.0"))
 @Environment(EnvType.CLIENT)
 @Mixin(Minecraft.class)
 public abstract class Minecraft_screenshotMixin {
-
-    @Nullable
-    private ByteBuffer memoryLeakFix$screenshotByteBuffer;
 
     @ModifyExpressionValue(
             method = "grabHugeScreenshot",
@@ -31,8 +29,10 @@ public abstract class Minecraft_screenshotMixin {
                     target = "Lcom/mojang/blaze3d/platform/GlUtil;allocateMemory(I)Ljava/nio/ByteBuffer;"
             )
     )
-    private ByteBuffer memoryLeakFix$captureByteBuffer(ByteBuffer byteBuf) {
-        return this.memoryLeakFix$screenshotByteBuffer = byteBuf;
+    private ByteBuffer memoryLeakFix$captureByteBuffer(ByteBuffer byteBuf,
+                                                       @Share("memoryLeakFix$byteBuf") LocalRef<ByteBuffer> bufRef) {
+        bufRef.set(byteBuf);
+        return byteBuf;
     }
 
     @Inject(
@@ -42,8 +42,8 @@ public abstract class Minecraft_screenshotMixin {
                     args = "stringValue=screenshot.failure"
             )
     )
-    private void memoryLeakFix$freeByteBuffer(CallbackInfoReturnable<Component> cir) {
-        GlUtil.freeMemory(this.memoryLeakFix$screenshotByteBuffer);
-        this.memoryLeakFix$screenshotByteBuffer = null;
+    private void memoryLeakFix$freeByteBuffer(CallbackInfoReturnable<Component> cir,
+                                              @Share("memoryLeakFix$byteBuf") LocalRef<ByteBuffer> bufRef) {
+        GlUtil.freeMemory(bufRef.get());
     }
 }
