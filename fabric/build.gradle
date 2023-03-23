@@ -10,7 +10,7 @@ architectury {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-if (!(System.getProperty("build16") != null && System.getProperty("build16"))) {
+if (!build16) {
     sourceSets.main.java.exclude "ca/fxco/memoryleakfix/mixin/hugeScreenshotLeak/*", "ca/fxco/memoryleakfix/mixin/tagKeyLeak/*"
 }
 

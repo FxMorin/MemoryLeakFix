@@ -6,8 +6,12 @@ plugins {
 repositories {
 }
 
+ext {
+    build16 = (System.getProperty("build16") != null && System.getProperty("build16"))
+}
+
 architectury {
-    minecraft = (System.getProperty("build16") != null && System.getProperty("build16")) ? rootProject.minecraft_version_16 : rootProject.minecraft_version
+    minecraft = build16 ? rootProject.minecraft_version_16 : rootProject.minecraft_version
 }
 
 subprojects {
@@ -18,7 +22,7 @@ subprojects {
     }
 
     dependencies {
-        minecraft "com.mojang:minecraft:${(System.getProperty("build16") != null && System.getProperty("build16")) ? rootProject.minecraft_version_16 : rootProject.minecraft_version}"
+        minecraft "com.mojang:minecraft:${build16 ? rootProject.minecraft_version_16 : rootProject.minecraft_version}"
         // The following line declares the mojmap mappings, you may use other mappings as well
         mappings loom.officialMojangMappings()
         // The following line declares the yarn mappings you may select this one as well.
@@ -52,7 +56,7 @@ allprojects {
         from rootProject.file("LICENSE")
     }
 
-    if (System.getProperty("build16") != null && System.getProperty("build16")) {
+    if (build16) {
         version += "-pre1.17"
     }
 }
