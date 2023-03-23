@@ -27,27 +27,27 @@ public class MemoryLeakFixFabric implements ModInitializer {
 
     public static void forceLoadAllMixinsAndClearSpongePoweredCache() {
         try {
-            internalForceLoadAllMixinsAndClearSpongePoweredCache();
+            // Must be fabric loader version smaller than v0.14.14. Patched in v0.14.15
+            if (Version.parse(FabricLoaderImpl.VERSION).compareTo(Version.parse("0.14.15")) < 0) {
+                internalForceLoadAllMixinsAndClearSpongePoweredCache();
+            }
         } catch (VersionParsingException ignored) {}
     }
 
     private static void internalForceLoadAllMixinsAndClearSpongePoweredCache() throws VersionParsingException {
-        // Must be fabric loader version smaller than v0.14.14. Patched in v0.14.15
-        if (Version.parse(FabricLoaderImpl.VERSION).compareTo(Version.parse("0.14.15")) < 0) {
-            MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Attempting to ForceLoad All Mixins and clear cache");
-            silenceAuditLogger();
-            MixinEnvironment.getCurrentEnvironment().audit();
-            try {
-                Field noGroupField = InjectorGroupInfo.Map.class.getDeclaredField("NO_GROUP");
-                noGroupField.setAccessible(true);
-                Object noGroup = noGroupField.get(null);
-                Field membersField = noGroup.getClass().getDeclaredField("members");
-                membersField.setAccessible(true);
-                ((List<?>) membersField.get(noGroup)).clear(); // Clear spongePoweredCache
-                emptyClassInfo();
-            } catch (NoSuchFieldException | IllegalAccessException ignored) {}
-            MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Done ForceLoad and clearing SpongePowered cache");
-        }
+        MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Attempting to ForceLoad All Mixins and clear cache");
+        silenceAuditLogger();
+        MixinEnvironment.getCurrentEnvironment().audit();
+        try {
+            Field noGroupField = InjectorGroupInfo.Map.class.getDeclaredField("NO_GROUP");
+            noGroupField.setAccessible(true);
+            Object noGroup = noGroupField.get(null);
+            Field membersField = noGroup.getClass().getDeclaredField("members");
+            membersField.setAccessible(true);
+            ((List<?>) membersField.get(noGroup)).clear(); // Clear spongePoweredCache
+            emptyClassInfo();
+        } catch (NoSuchFieldException | IllegalAccessException ignored) {}
+        MemoryLeakFix.LOGGER.info("[MemoryLeakFix] Done ForceLoad and clearing SpongePowered cache");
     }
 
     private static Class<?> getMixinLoggerClass() throws ClassNotFoundException {

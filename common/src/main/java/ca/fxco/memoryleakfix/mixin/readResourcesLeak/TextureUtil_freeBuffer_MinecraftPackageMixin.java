@@ -1,6 +1,7 @@
 package ca.fxco.memoryleakfix.mixin.readResourcesLeak;
 
 import ca.fxco.memoryleakfix.config.MinecraftRequirement;
+import ca.fxco.memoryleakfix.config.Remap;
 import ca.fxco.memoryleakfix.config.VersionRange;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -32,8 +33,9 @@ public abstract class TextureUtil_freeBuffer_MinecraftPackageMixin {
      * By Fx Morin - thanks to Icyllis Milica for [MC-226729](https://bugs.mojang.com/browse/MC-226729)
      */
 
+    @Remap(mcp = "func_225684_a_")
     @WrapOperation(
-            method = {"method_24962", "func_225684_a_"},
+            method = "method_24962",
             at = {
                     @At(
                             value = "INVOKE",
