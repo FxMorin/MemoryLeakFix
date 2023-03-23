@@ -21,7 +21,7 @@
     ]
   },
   "mixins": [
-    "memoryleakfix.mixins.json",
+    "${commonMixinId}.mixins.json",
     "memoryleakfix-fabric.mixins.json"
   ],
   "depends": {

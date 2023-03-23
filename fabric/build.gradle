@@ -40,10 +40,12 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", project.version
+    def commonMixinId = "memoryleakfix" + (build16 ? "-16" : "")
+    def resInputs = [version: project.version, commonMixinId: commonMixinId]
+    inputs.properties(resInputs)
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand(resInputs)
     }
 }
 
