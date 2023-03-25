@@ -26,3 +26,7 @@ mandatory = true
 versionRange = "*"
 ordering = "NONE"
 side = "BOTH"
+
+[custom.mc-publish]
+curseforge=627566
+modrinth="NRjRiSSD"
