@@ -32,7 +32,7 @@ public abstract class TextureUtil_freeBuffer_MojangPackageMixin {
      * By Fx Morin - thanks to Icyllis Milica for [MC-226729](https://bugs.mojang.com/browse/MC-226729)
      */
 
-    @SuppressWarnings("DefaultAnnotationParam")
+    @SuppressWarnings({"DefaultAnnotationParam", "MixinAnnotationTarget"})
     @WrapOperation(
             method = "readResource(Ljava/io/InputStream;)Ljava/nio/ByteBuffer;",
             at = {

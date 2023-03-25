@@ -3,7 +3,6 @@ package ca.fxco.memoryleakfix.config;
 import ca.fxco.memoryleakfix.MemoryLeakFix;
 import ca.fxco.memoryleakfix.MemoryLeakFixBootstrap;
 import ca.fxco.memoryleakfix.MemoryLeakFixExpectPlatform;
-import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
