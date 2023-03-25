@@ -58,5 +58,7 @@ allprojects {
 
     if (build16) {
         version += "-pre1.17"
+    } else {
+        version += "-1.17+"
     }
 }
