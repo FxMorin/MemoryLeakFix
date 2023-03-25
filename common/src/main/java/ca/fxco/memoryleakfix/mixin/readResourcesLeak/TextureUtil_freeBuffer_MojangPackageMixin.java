@@ -17,7 +17,7 @@ import java.nio.channels.Channel;
 
 @MinecraftRequirement({
         @VersionRange(maxVersion = "1.14.4"),
-        @VersionRange(minVersion = "1.17.0")
+        @VersionRange(minVersion = "1.17.0", maxVersion = "1.19.3")
 })
 @Environment(EnvType.CLIENT)
 @Mixin(value = TextureUtil.class, remap = false)
