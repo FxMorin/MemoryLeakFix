@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[26,)"
+issueTrackerURL = "https://github.com/fxmorin/memoryleakfix/issues"
+license = "LGPL-2.1-only"
+
+[[mods]]
+modId = "memoryleakfix"
+version = "${version}"
+displayName = "Memory Leak Fix"
+authors = "FX - PR0CESS"
+description = '''
+A mod which fixes multiple memory leaks, both client-side & server-side
+'''
+logoFile = "icon.png"
+
+[[dependencies.memoryleakfix]]
+modId = "forge"
+mandatory = true
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.memoryleakfix]]
+modId = "minecraft"
+mandatory = true
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"

@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ca.fxco.memoryleakfix.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "customPayloadLeak.ClientboundCustomPayloadPacket_bufferMixin",
+    "customPayloadLeak.FriendlyByteBufAccessor",
+    "customPayloadLeak.Minecraft_freeBufferMixin",
+    "spongePoweredLeak.Minecraft_clientLoadedMixin"
+  ],
+  "server": [
+    "spongePoweredLeak.MinecraftServer_serverLoadedMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "plugin": "ca.fxco.memoryleakfix.config.MemoryLeakFixMixinConfigPlugin"
+}

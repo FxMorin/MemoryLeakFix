@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ca.fxco.memoryleakfix.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "hugeScreenshotLeak.Minecraft_screenshotMixin",
+    "readResourcesLeak.TextureUtil_freeBuffer_MojangPackageMixin",
+    "targetEntityLeak.MinecraftClient_targetClearMixin"
+  ],
+  "mixins": [
+    "biomeTemperatureLeak.Biome_threadLocalMixin",
+    "entityMemoriesLeak.Brain_clearMemoriesMixin",
+    "entityMemoriesLeak.Entity_clearMemoriesMixin",
+    "entityMemoriesLeak.LivingEntity_clearMemoriesMixin",
+    "tagKeyLeak.TagKey_internerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "plugin": "ca.fxco.memoryleakfix.config.MemoryLeakFixMixinConfigPlugin"
+}
