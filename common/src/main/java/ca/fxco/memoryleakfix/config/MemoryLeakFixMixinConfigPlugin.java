@@ -8,8 +8,6 @@ import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.*;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,15 +22,13 @@ import java.util.*;
 
 public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
 
-    private static final Object2BooleanMap<String> MIXIN_CLASS_CACHE = new Object2BooleanArrayMap<>();
-    private static final Set<String> APPLIED_MEMORY_LEAK_FIXES = new HashSet<>();
+    private final Set<String> APPLIED_MEMORY_LEAK_FIXES = new HashSet<>();
     private static boolean shouldMentionFixCount = true;
 
     // prevent running custom annotations twice
-    private static final Set<String> CUSTOM_ANNOTATION_CLASSES = new HashSet<>();
+    //private static final Set<String> CUSTOM_ANNOTATION_CLASSES = new HashSet<>();
 
     private static final boolean VERBOSE = false;
-
     @Override
     public void onLoad(String mixinPackage) {
         MemoryLeakFixBootstrap.init();
@@ -48,9 +44,7 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         if (!mixinClassName.startsWith("ca.fxco.memoryleakfix")) {
             return true;
         }
-        boolean shouldApply = MIXIN_CLASS_CACHE.computeIfAbsent(mixinClassName, mixinClassName2 ->
-            areRequirementsMet(getMinecraftRequirement((String) mixinClassName2))
-        );
+        boolean shouldApply = areRequirementsMet(getMinecraftRequirement(mixinClassName));
         if (shouldApply) {
             String classGroup = mixinClassName.substring(0, mixinClassName.lastIndexOf("."));
             APPLIED_MEMORY_LEAK_FIXES.add(classGroup.substring(classGroup.lastIndexOf(".") + 1));
@@ -89,13 +83,11 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         if (!className.startsWith("ca.fxco.memoryleakfix")) {
             return;
         }
-        if (CUSTOM_ANNOTATION_CLASSES.contains(className)) {
+        /*if (CUSTOM_ANNOTATION_CLASSES.contains(className)) {
             return;
         }
-        CUSTOM_ANNOTATION_CLASSES.add(className);
-        if (!MIXIN_CLASS_CACHE.computeIfAbsent(className, className2 ->
-                areRequirementsMet(Annotations.getInvisible(classNode, MinecraftRequirement.class))
-        )) {
+        CUSTOM_ANNOTATION_CLASSES.add(className);*/
+        if (!areRequirementsMet(Annotations.getInvisible(classNode, MinecraftRequirement.class))) {
             return;
         }
         Iterator<MethodNode> methodIterator = classNode.methods.iterator();
