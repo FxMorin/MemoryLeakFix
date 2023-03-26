@@ -38,6 +38,7 @@ configurations {
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentForge.extendsFrom common
+    shadow.extendsFrom implementation
 }
 
 dependencies {
@@ -49,8 +50,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
     // MixinExtras
-    implementation(annotationProcessor("com.github.LlamaLad7.MixinExtras:mixinextras-forge:${rootProject.mixinextras_version}"))
-    implementation(include("com.github.LlamaLad7.MixinExtras:mixinextras-forge:${rootProject.mixinextras_version}"))
+    shadow(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:0.2.0-beta.5"))
 }
 
 processResources {
@@ -67,6 +67,12 @@ shadowJar {
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    relocate("com.llamalad7.mixinextras", "ca.fxco.memoryleakfix.mixinextras")
+    mergeServiceFiles() // Very important!
 }
 
 remapJar {
