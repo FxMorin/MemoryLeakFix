@@ -6,7 +6,7 @@ on:
       - published
 
 jobs:
-  Build_pre-1_17:
+  build_pre17:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,81 +20,16 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build -Dbuild16=true
-      - name: Move fabric to main dir
-        run: mv fabric/build/libs/ build/fabric/
-      - name: Move forge to main dir
-        run: mv forge/build/libs/ build/forge/
-      - name: Publish 1.14.4 - 1.16.5 Fabric
-        uses: Kir-Antipov/mc-publish@v3.2
+      - uses: actions/upload-artifact@v2
         with:
-          files-primary: build/fabric/!(*-@(dev|sources|javadoc|shadow)).jar
-          files-secondary: build/fabric/*-@(dev|sources|javadoc|shadow).jar
-          loaders: |
-            fabric
-            quilt
-          game-versions: |
-            1.14.4
-            1.15
-            1.15.1
-            1.15.2
-            1.16
-            1.16.1
-            1.16.2
-            1.16.3
-            1.16.4
-            1.16.5
-          java: |
-            8
-            16
-            17
-          modrinth-featured: true
-          modrinth-unfeature-mode: intersection
-          version-type: beta
-          version-resolver: releases
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          retry-attempts: 2
-          retry-delay: 10000
-          fail-mode: skip
-      - name: Publish 1.13.2 - 1.16.5 Forge
-        if: always()
-        uses: Kir-Antipov/mc-publish@v3.2
+          name: fabric_pre17
+          path: fabric/build/libs/
+      - uses: actions/upload-artifact@v2
         with:
-          files-primary: build/forge/!(*-@(dev|sources|javadoc|shadow)).jar
-          files-secondary: build/forge/*-@(dev|sources|javadoc|shadow).jar
-          loaders: forge
-          game-versions: |
-            1.13.2
-            1.14
-            1.14.1
-            1.14.2
-            1.14.3
-            1.14.4
-            1.15
-            1.15.1
-            1.15.2
-            1.16
-            1.16.1
-            1.16.2
-            1.16.3
-            1.16.4
-            1.16.5
-          java: |
-            8
-            16
-            17
-          modrinth-featured: true
-          modrinth-unfeature-mode: intersection
-          version-type: beta
-          version-resolver: releases
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          retry-attempts: 2
-          retry-delay: 10000
-          fail-mode: skip
-  Build_modern:
+          name: forge_pre17
+          path: forge/build/libs/
+
+  build_post16:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -108,61 +43,105 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Move fabric to main dir
-        run: mv fabric/build/libs/ build/fabric/
-      - name: Move forge to main dir
-        run: mv forge/build/libs/ build/forge/
-      - name: Publish 1.17+ Fabric
+      - uses: actions/upload-artifact@v2
+        with:
+          name: fabric_post16
+          path: fabric/build/libs/
+      - uses: actions/upload-artifact@v2
+        with:
+          name: forge_post16
+          path: forge/build/libs/
+
+  publish:
+    strategy:
+      matrix:
+        include:
+          - name: '[forge,1.13.2-1.16.5]'
+            platform: forge
+            loaders: forge
+            name-versions: pre17
+            game-versions: |
+              1.13.2
+              1.14
+              1.14.1
+              1.14.2
+              1.14.3
+              1.14.4
+              1.15
+              1.15.1
+              1.15.2
+              1.16
+              1.16.1
+              1.16.2
+              1.16.3
+              1.16.4
+              1.16.5
+          - name: '[fabric,1.14.4-1.16.5]'
+            platform: fabric
+            loaders: |
+              fabric
+              quilt
+            name-versions: pre17
+            game-versions: |
+              1.14.4
+              1.15
+              1.15.1
+              1.15.2
+              1.16
+              1.16.1
+              1.16.2
+              1.16.3
+              1.16.4
+              1.16.5
+          - name: '[forge,1.17+]'
+            platform: forge
+            loaders: forge
+            name-versions: post16
+            game-versions: |
+              1.17
+              1.17.1
+              1.18
+              1.18.1
+              1.18.2
+              1.19
+              1.19.1
+              1.19.2
+              1.19.3
+              1.19.4
+          - name: '[fabric,1.17+]'
+            platform: fabric
+            loaders: |
+              fabric
+              quilt
+            name-versions: post16
+            game-versions: |
+              1.17
+              1.17.1
+              1.18
+              1.18.1
+              1.18.2
+              1.19
+              1.19.1
+              1.19.2
+              1.19.3
+              1.19.4
+    needs: [build_pre17, build_post16]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: download build jars
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ matrix.platform }}_${{ matrix.name-versions }}
+          path: ${{ matrix.platform }}/build/libs/
+      - name: Publish ${{ matrix.name }}
         uses: Kir-Antipov/mc-publish@v3.2
         with:
-          files-primary: build/fabric/!(*-@(dev|sources|javadoc|shadow)).jar
-          files-secondary: build/fabric/*-@(dev|sources|javadoc|shadow).jar
-          loaders: |
-            fabric
-            quilt
-          game-versions: |
-            1.17
-            1.17.1
-            1.18
-            1.18.1
-            1.18.2
-            1.19
-            1.19.1
-            1.19.2
-            1.19.3
-            1.19.4
-          java: |
-            8
-            16
-            17
-          modrinth-featured: true
-          modrinth-unfeature-mode: intersection
-          version-type: beta
-          version-resolver: releases
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          retry-attempts: 2
-          retry-delay: 10000
-          fail-mode: skip
-      - name: Publish 1.17+ Forge
-        if: always()
-        uses: Kir-Antipov/mc-publish@v3.2
-        with:
-          files-primary: build/forge/!(*-@(dev|sources|javadoc|shadow)).jar
-          files-secondary: build/forge/*-@(dev|sources|javadoc|shadow).jar
-          loaders: forge
-          game-versions: |
-            1.17
-            1.17.1
-            1.18
-            1.18.1
-            1.18.2
-            1.19
-            1.19.1
-            1.19.2
-            1.19.3
-            1.19.4
+          name: ${{ matrix.name }}
+          files-primary: ${{ matrix.platform }}/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
+          files-secondary: ${{ matrix.platform }}/build/libs/*-@(dev|sources|javadoc|shadow).jar
+          loaders: ${{ matrix.loaders }}
+          game-versions: ${{ matrix.game-versions }}
           java: |
             8
             16
