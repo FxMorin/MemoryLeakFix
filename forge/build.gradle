@@ -28,7 +28,8 @@ loom {
     }
      */
     forge {
-        mixinConfig "memoryleakfix.mixins.json"
+        def commonMixinId = "memoryleakfix" + (build16 ? "-16" : "")
+        mixinConfig commonMixinId + ".mixins.json"
     }
 }
 
