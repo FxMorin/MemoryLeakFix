@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Minecraft.class)
-public abstract class MinecraftClient_targetClearMixin {
+public abstract class Minecraft_targetClearMixin {
 
     @Shadow
     @Nullable

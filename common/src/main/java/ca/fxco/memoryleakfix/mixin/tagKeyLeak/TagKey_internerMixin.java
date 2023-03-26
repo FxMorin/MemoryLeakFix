@@ -25,7 +25,7 @@ public abstract class TagKey_internerMixin {
                             "Lcom/google/common/collect/Interner;"
             )
     )
-    private static Interner<TagKey<?>> useWeakInterner() {
+    private static Interner<TagKey<?>> memoryLeakFix$useWeakInterner() {
         return Interners.newWeakInterner();
     }
 }
