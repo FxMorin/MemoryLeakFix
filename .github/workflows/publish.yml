@@ -129,6 +129,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Get GitHub Release version
+        id: release-version
+        run: |
+          version=$(echo ${{ github.event.release.tag_name }} | cut -d'v' -f2)
+          echo "::set-output name=version::$version"
       - name: download build jars
         uses: actions/download-artifact@v3
         with:
@@ -137,7 +142,7 @@ jobs:
       - name: Publish ${{ matrix.name }}
         uses: Kir-Antipov/mc-publish@v3.2
         with:
-          name: ${{ matrix.name }}
+          name: MemoryLeakFix ${{ steps.release-version.outputs.version }} ${{ matrix.name }}
           files-primary: ${{ matrix.platform }}/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
           files-secondary: ${{ matrix.platform }}/build/libs/*-@(dev|sources|javadoc|shadow).jar
           loaders: ${{ matrix.loaders }}
