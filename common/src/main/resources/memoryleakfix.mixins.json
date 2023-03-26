@@ -6,7 +6,7 @@
   "client": [
     "hugeScreenshotLeak.Minecraft_screenshotMixin",
     "readResourcesLeak.TextureUtil_freeBuffer_MojangPackageMixin",
-    "targetEntityLeak.MinecraftClient_targetClearMixin"
+    "targetEntityLeak.Minecraft_targetClearMixin"
   ],
   "mixins": [
     "biomeTemperatureLeak.Biome_threadLocalMixin",
