@@ -53,20 +53,33 @@ dependencies {
 
     // MixinExtras
     shadowCommon(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:0.2.0-beta.5"))
-
+/*
     // Mixin
     if (build16) {
         shadowCommon(annotationProcessor("org.spongepowered:mixin:0.8.5")) {
             transitive false
         }
     }
+
+ */
 }
 
 processResources {
-    inputs.property "version", project.version
+    def mcVersion
+    def forgeVersion
+    if (build16) {
+        mcVersion = "[1.15.2,1.16.5]"
+        forgeVersion = "[31.2.44,)"
+    } else {
+        mcVersion = "[1.17,)"
+        forgeVersion = "[37,)"
+    }
+    
+    def resInputs = [version: project.version, mcVersion: mcVersion, forgeVersion: forgeVersion]
+    inputs.properties(resInputs)
 
     filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
+        expand(resInputs)
     }
 }
 
