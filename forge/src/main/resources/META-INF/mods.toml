@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[26,)"
+loaderVersion = "${forgeVersion}"
 issueTrackerURL = "https://github.com/fxmorin/memoryleakfix/issues"
 license = "LGPL-2.1-only"
 
@@ -16,14 +16,14 @@ logoFile = "icon.png"
 [[dependencies.memoryleakfix]]
 modId = "forge"
 mandatory = true
-versionRange = "*"
+versionRange = "${forgeVersion}"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.memoryleakfix]]
 modId = "minecraft"
 mandatory = true
-versionRange = "*"
+versionRange = "${mcVersion}"
 ordering = "NONE"
 side = "BOTH"
 

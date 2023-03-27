@@ -18,8 +18,11 @@ public abstract class Brain_clearMemoriesMixin implements ExtendBrain {
 
     @Shadow @Final private Map<MemoryModuleType<?>, Optional<?>> memories;
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType") // mojank ¯\_ (ツ)_/¯
+    @Shadow public abstract void setMemory(MemoryModuleType<?> memoryModuleType, Optional<?> optional);
+
     @Override
     public void memoryLeakFix$clearMemories() {
-        this.memories.keySet().forEach(module -> this.memories.put(module, Optional.empty()));
+        this.memories.keySet().forEach(module -> this.setMemory(module, Optional.empty()));
     }
 }
