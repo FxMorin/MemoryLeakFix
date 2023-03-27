@@ -56,19 +56,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: '[forge,1.13.2-1.16.5]'
+          - name: '[forge,1.15.2-1.16.5]'
             platform: forge
             loaders: forge
             name-versions: pre17
             game-versions: |
-              1.13.2
-              1.14
-              1.14.1
-              1.14.2
-              1.14.3
-              1.14.4
-              1.15
-              1.15.1
               1.15.2
               1.16
               1.16.1
