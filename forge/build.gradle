@@ -4,6 +4,7 @@ plugins {
 
 repositories {
     maven { url 'https://jitpack.io' }
+    maven { url = 'https://repo.spongepowered.org/maven' }
 }
 
 architectury {
@@ -52,6 +53,13 @@ dependencies {
 
     // MixinExtras
     shadowCommon(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:0.2.0-beta.5"))
+
+    // Mixin
+    if (build16) {
+        shadowCommon(annotationProcessor("org.spongepowered:mixin:0.8.5")) {
+            transitive false
+        }
+    }
 }
 
 processResources {
