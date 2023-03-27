@@ -136,7 +136,8 @@ jobs:
         with:
           name: MemoryLeakFix ${{ steps.release-version.outputs.version }} ${{ matrix.name }}
           files-primary: ${{ matrix.platform }}/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
-          files-secondary: ${{ matrix.platform }}/build/libs/*-@(dev|sources|javadoc|shadow).jar
+          modrinth-files-secondary: ${{ matrix.platform }}/build/libs/*-@(dev|sources|javadoc|shadow).jar
+          github-files-secondary: ${{ matrix.platform }}/build/libs/*-@(dev|sources|javadoc|shadow).jar
           loaders: ${{ matrix.loaders }}
           game-versions: ${{ matrix.game-versions }}
           java: |
