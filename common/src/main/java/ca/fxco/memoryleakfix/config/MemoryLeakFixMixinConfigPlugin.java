@@ -11,6 +11,7 @@ import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.*;
+import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -46,12 +47,27 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         if (!mixinClassName.startsWith("ca.fxco.memoryleakfix")) {
             return true;
         }
-        boolean shouldApply = areRequirementsMet(getMinecraftRequirement(mixinClassName));
+        boolean shouldApply = areRequirementsMet(getMinecraftRequirement(mixinClassName)) && !shouldSilentNoClassDefFound(targetClassName, mixinClassName);
         if (shouldApply) {
             String classGroup = mixinClassName.substring(0, mixinClassName.lastIndexOf("."));
             APPLIED_MEMORY_LEAK_FIXES.add(classGroup.substring(classGroup.lastIndexOf(".") + 1));
         }
         return shouldApply;
+    }
+
+    private boolean shouldSilentNoClassDefFound(String targetClassName, String mixinClassName) {
+        try {
+            ClassNode mixinClass = MixinService.getService().getBytecodeProvider().getClassNode(mixinClassName);
+            if (Annotations.getInvisible(mixinClass, SilentClassNotFound.class) != null) {
+                try {
+                    MixinService.getService().getBytecodeProvider().getClassNode(targetClassName);
+                } catch (ClassNotFoundException e) {
+                    return true;
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        return false;
     }
 
     @Override
@@ -113,6 +129,16 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
                     executeRemapAnnotation(node, Annotations.getValue(remapTarget, "target"), true);
                 } else {
                     executeRemapAnnotation(node, Annotations.getVisible(node, Remap.class), false);
+
+                    AnnotationNode remapsAnnotation = Annotations.getInvisible(node, Remaps.class);
+                    if (remapsAnnotation != null) {
+                        List<AnnotationNode> remaps = Annotations.getValue(remapsAnnotation);
+                        if (remaps != null) {
+                            for (AnnotationNode remap : remaps) {
+                                executeRemapAnnotation(node, remap, false);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -226,6 +252,12 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
         if (excludeDev && MemoryLeakFixExpectPlatform.isDevEnvironment()) {
             if (VERBOSE) {
                 System.out.println("Remap annotation excluded from dev: " + node.name + node.desc);
+            }
+            return;
+        }
+        if (!areRequirementsMet(Annotations.getValue(remap, "mcVersions"))) {
+            if (VERBOSE) {
+                System.out.println("Remap annotation skipped because it doesn't match the minecraft requirement: " + node.name + node.desc);
             }
             return;
         }

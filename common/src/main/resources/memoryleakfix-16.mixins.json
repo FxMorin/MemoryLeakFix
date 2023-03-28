@@ -4,8 +4,7 @@
   "package": "ca.fxco.memoryleakfix.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "readResourcesLeak.TextureUtil_freeBuffer_MinecraftPackageMixin",
-    "readResourcesLeak.TextureUtil_freeBuffer_MojangPackageMixin",
+    "readResourcesLeak.TextureUtil_freeBufferMixin",
     "targetEntityLeak.Minecraft_targetClearMixin"
   ],
   "mixins": [

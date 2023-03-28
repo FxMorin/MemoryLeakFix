@@ -52,7 +52,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
     // MixinExtras
-    shadowCommon(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:0.2.0-beta.5"))
+    forgeRuntimeLibrary(shadowCommon(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${rootProject.mixinextras_version}"))) {transitive false}
 /*
     // Mixin
     if (build16) {
