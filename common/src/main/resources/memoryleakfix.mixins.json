@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "hugeScreenshotLeak.Minecraft_screenshotMixin",
-    "readResourcesLeak.TextureUtil_freeBuffer_MojangPackageMixin",
     "targetEntityLeak.Minecraft_targetClearMixin"
   ],
   "mixins": [

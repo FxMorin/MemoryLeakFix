@@ -1,27 +1,33 @@
 package ca.fxco.memoryleakfix.mixin.readResourcesLeak;
 
-import ca.fxco.memoryleakfix.config.MinecraftRequirement;
-import ca.fxco.memoryleakfix.config.VersionRange;
+import ca.fxco.memoryleakfix.config.*;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.platform.TextureUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.lwjgl.system.MemoryUtil;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.Channel;
 
-@MinecraftRequirement({
-        @VersionRange(maxVersion = "1.14.4"),
-        @VersionRange(minVersion = "1.17.0", maxVersion = "1.19.3")
-})
+// class_4536 is the fabric intermediary class name of TextureUtil in 1.15.x,
+// net/minecraft/client/texture/TextureUtil is the fabric mapping to make it work in dev
+// where the class was part of the net.minecraft package, method_24962 (Fabric) / func_225684_a_ (Forge) are the equivalents of readResource
+//@MinecraftRequirement(@VersionRange(minVersion = "1.15.0", maxVersion = "1.16.5"))
+@Pseudo
+@SilentClassNotFound
 @Environment(EnvType.CLIENT)
-@Mixin(value = TextureUtil.class, remap = false)
-public abstract class TextureUtil_freeBuffer_MojangPackageMixin {
+@Mixin(targets = {
+        "com/mojang/blaze3d/platform/TextureUtil",
+        "net/minecraft/class_4536",
+        "net/minecraft/client/texture/TextureUtil",
+        "net/minecraft/client/renderer/texture/TextureUtil"
+}, remap = false)
+public abstract class TextureUtil_freeBufferMixin {
 
     /*
      * This fixes memory leaks under 2 conditions. If you are reloading a pack and it crashes, or if a mod changes how
@@ -32,7 +38,11 @@ public abstract class TextureUtil_freeBuffer_MojangPackageMixin {
      * By Fx Morin - thanks to Icyllis Milica for [MC-226729](https://bugs.mojang.com/browse/MC-226729)
      */
 
-    @SuppressWarnings({"DefaultAnnotationParam", "MixinAnnotationTarget"})
+    @SuppressWarnings("MixinAnnotationTarget")
+    @Remaps({
+            @Remap(fabric = "method_24962", excludeDev = true, mcVersions = @MinecraftRequirement(@VersionRange(minVersion = "1.16.0", maxVersion = "1.16.5"))),
+            @Remap(mcp = "func_225684_a_", excludeDev = true)
+    })
     @WrapOperation(
             method = "readResource(Ljava/io/InputStream;)Ljava/nio/ByteBuffer;",
             at = {
@@ -44,8 +54,7 @@ public abstract class TextureUtil_freeBuffer_MojangPackageMixin {
                             value = "INVOKE",
                             target = "Ljava/nio/channels/ReadableByteChannel;read(Ljava/nio/ByteBuffer;)I"
                     )
-            },
-            remap = true
+            }
     )
     private static int memoryLeakFix$readResourceWithoutLeak(@Coerce Channel channel, ByteBuffer byteBuf,
                                                              Operation<Integer> original) {

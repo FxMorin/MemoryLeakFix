@@ -21,4 +21,6 @@ public @interface Remap {
     String[] mcp() default {};
 
     boolean excludeDev() default false;
+
+    MinecraftRequirement mcVersions() default @MinecraftRequirement({});
 }
