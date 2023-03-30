@@ -146,7 +146,7 @@ jobs:
             17
           modrinth-featured: true
           modrinth-unfeature-mode: intersection
-          version-type: beta
+          version-type: release
           version-resolver: releases
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
