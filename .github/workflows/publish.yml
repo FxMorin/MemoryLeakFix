@@ -61,7 +61,13 @@ jobs:
             loaders: forge
             name-versions: pre17
             game-versions: |
-              >=1.15.2 <=1.16.5
+              1.15.2
+              1.16
+              1.16.1
+              1.16.2
+              1.16.3
+              1.16.4
+              1.16.5
           - name: '[fabric,1.14.4-1.16.5]'
             platform: fabric
             loaders: |
@@ -69,13 +75,32 @@ jobs:
               quilt
             name-versions: pre17
             game-versions: |
-              >=1.14.4 <=1.16.5
+              1.14.4
+              1.15
+              1.15.1
+              1.15.2
+              1.16
+              1.16.1
+              1.16.2
+              1.16.3
+              1.16.4
+              1.16.5
           - name: '[forge,1.17+]'
             platform: forge
             loaders: forge
             name-versions: post16
             game-versions: |
-              >=1.17 <=1.20
+              1.17
+              1.17.1
+              1.18
+              1.18.1
+              1.18.2
+              1.19
+              1.19.1
+              1.19.2
+              1.19.3
+              1.19.4
+              1.20
           - name: '[fabric,1.17+]'
             platform: fabric
             loaders: |
@@ -83,7 +108,17 @@ jobs:
               quilt
             name-versions: post16
             game-versions: |
-              >=1.17 <=1.20
+              1.17
+              1.17.1
+              1.18
+              1.18.1
+              1.18.2
+              1.19
+              1.19.1
+              1.19.2
+              1.19.3
+              1.19.4
+              1.20
     needs: [build_pre17, build_post16]
     runs-on: ubuntu-latest
     steps:
