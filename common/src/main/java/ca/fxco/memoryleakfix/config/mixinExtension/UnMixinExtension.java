@@ -1,7 +1,7 @@
 package ca.fxco.memoryleakfix.config.mixinExtension;
 
 import ca.fxco.memoryleakfix.config.MemoryLeakFixMixinConfigPlugin;
-import com.llamalad7.mixinextras.utils.MixinInternals;
+import ca.fxco.memoryleakfix.utils.MixinInternals;
 import org.apache.commons.lang3.tuple.Pair;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.MixinEnvironment;
