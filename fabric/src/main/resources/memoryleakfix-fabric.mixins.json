@@ -4,9 +4,8 @@
   "package": "ca.fxco.memoryleakfix.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "customPayloadLeak.ClientboundCustomPayloadPacket_bufferMixin",
     "customPayloadLeak.FriendlyByteBufAccessor",
-    "customPayloadLeak.Minecraft_freeBufferMixin",
+    "customPayloadLeak.Minecraft_freeBufferMixin"
   ],
   "injectors": {
     "defaultRequire": 1
