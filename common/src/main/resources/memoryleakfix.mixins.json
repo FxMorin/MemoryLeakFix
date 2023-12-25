@@ -11,8 +11,7 @@
     "biomeTemperatureLeak.Biome_threadLocalMixin",
     "entityMemoriesLeak.Brain_clearMemoriesMixin",
     "entityMemoriesLeak.Entity_clearMemoriesMixin",
-    "entityMemoriesLeak.LivingEntity_clearMemoriesMixin",
-    "tagKeyLeak.TagKey_internerMixin"
+    "entityMemoriesLeak.LivingEntity_clearMemoriesMixin"
   ],
   "injectors": {
     "defaultRequire": 1
