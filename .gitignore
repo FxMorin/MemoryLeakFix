@@ -127,3 +127,4 @@ bin/
 .project
 # Don't show my terrible icon design
 large-icon.png
+.profileconfig.json

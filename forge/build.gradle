@@ -3,6 +3,7 @@ plugins {
 }
 
 repositories {
+    mavenCentral()
     maven { url 'https://jitpack.io' }
     maven { url = 'https://repo.spongepowered.org/maven' }
 }
@@ -52,7 +53,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
     // MixinExtras
-    forgeRuntimeLibrary(shadowCommon(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${rootProject.mixinextras_version}"))) {transitive false}
+    forgeRuntimeLibrary(shadowCommon(annotationProcessor("io.github.llamalad7:mixinextras-common:${rootProject.mixinextras_version}"))) {transitive false}
 /*
     // Mixin
     if (build16) {

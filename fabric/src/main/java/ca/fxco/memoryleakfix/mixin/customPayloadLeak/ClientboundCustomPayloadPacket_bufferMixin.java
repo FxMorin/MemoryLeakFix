@@ -1,10 +1,11 @@
 package ca.fxco.memoryleakfix.mixin.customPayloadLeak;
 
+import ca.fxco.memoryleakfix.config.MinecraftRequirement;
+import ca.fxco.memoryleakfix.config.VersionRange;
 import ca.fxco.memoryleakfix.fabric.MemoryLeakFixFabric;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,8 +13,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MinecraftRequirement(@VersionRange(maxVersion = "1.20.1"))
 @Environment(EnvType.CLIENT)
-@Mixin(ClientboundCustomPayloadPacket.class)
+@Mixin(targets = "net/minecraft/class_2658", remap = false)
 public abstract class ClientboundCustomPayloadPacket_bufferMixin {
 
     /*
@@ -37,6 +39,7 @@ public abstract class ClientboundCustomPayloadPacket_bufferMixin {
     private FriendlyByteBuf data;
 
 
+    @SuppressWarnings("UnresolvedMixinReference")
     @Inject(
             method = "handle(Lnet/minecraft/network/protocol/game/ClientGamePacketListener;)V",
             at = @At("RETURN")

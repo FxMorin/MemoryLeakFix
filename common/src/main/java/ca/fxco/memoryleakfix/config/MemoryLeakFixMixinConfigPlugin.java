@@ -9,9 +9,9 @@ import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import dev.architectury.injectables.targets.ArchitecturyTarget;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.*;
-import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -34,7 +34,9 @@ public class MemoryLeakFixMixinConfigPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         MemoryLeakFixBootstrap.init();
-        MixinExtrasBootstrap.init();
+        if (ArchitecturyTarget.getCurrentTarget().contains("forge")) {
+            MixinExtrasBootstrap.init();
+        }
     }
 
     @Override

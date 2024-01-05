@@ -1,5 +1,7 @@
 package ca.fxco.memoryleakfix.mixin.customPayloadLeak;
 
+import ca.fxco.memoryleakfix.config.MinecraftRequirement;
+import ca.fxco.memoryleakfix.config.VersionRange;
 import ca.fxco.memoryleakfix.fabric.MemoryLeakFixFabric;
 import io.netty.buffer.AbstractReferenceCountedByteBuf;
 import net.fabricmc.api.EnvType;
@@ -11,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MinecraftRequirement(@VersionRange(maxVersion = "1.20.1"))
 @Environment(EnvType.CLIENT)
 @Mixin(Minecraft.class)
 public abstract class Minecraft_freeBufferMixin {
