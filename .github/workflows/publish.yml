@@ -60,65 +60,26 @@ jobs:
             platform: forge
             loaders: forge
             name-versions: pre17
-            game-versions: |
-              1.15.2
-              1.16
-              1.16.1
-              1.16.2
-              1.16.3
-              1.16.4
-              1.16.5
+            game-versions: 1.15.2 - 1.16.5
           - name: '[fabric,1.14.4-1.16.5]'
             platform: fabric
             loaders: |
               fabric
               quilt
             name-versions: pre17
-            game-versions: |
-              1.14.4
-              1.15
-              1.15.1
-              1.15.2
-              1.16
-              1.16.1
-              1.16.2
-              1.16.3
-              1.16.4
-              1.16.5
+            game-versions: 1.14.4 - 1.16.5
           - name: '[forge,1.17+]'
             platform: forge
             loaders: forge
             name-versions: post16
-            game-versions: |
-              1.17
-              1.17.1
-              1.18
-              1.18.1
-              1.18.2
-              1.19
-              1.19.1
-              1.19.2
-              1.19.3
-              1.19.4
-              1.20
+            game-versions: '>=1.17'
           - name: '[fabric,1.17+]'
             platform: fabric
             loaders: |
               fabric
               quilt
             name-versions: post16
-            game-versions: |
-              1.17
-              1.17.1
-              1.18
-              1.18.1
-              1.18.2
-              1.19
-              1.19.1
-              1.19.2
-              1.19.3
-              1.19.4
-              1.20
+            game-versions: '>=1.17'
     needs: [build_pre17, build_post16]
     runs-on: ubuntu-latest
     steps:
@@ -150,8 +111,7 @@ jobs:
             17
           modrinth-featured: true
           modrinth-unfeature-mode: intersection
-          version-type: release
-          version-resolver: releases
+          game-version-filter: releases
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           retry-attempts: 2
