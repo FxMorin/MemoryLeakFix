@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
- * This fixes: <a href="https://bugs.mojang.com/browse/MC-248621">MC-248621</a>
+ * This is fix does not work for forge, and is already part of fabric: <a href="https://bugs.mojang.com/browse/MC-248621">MC-248621</a>
  */
 @MinecraftRequirement(@VersionRange(minVersion = "1.18.2", maxVersion = "1.18.2"))
 @Mixin(targets = "net/minecraft/class_6862", priority = 1500)
