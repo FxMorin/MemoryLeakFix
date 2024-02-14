@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Set;
 
 /**
- * This does not fix, although it might improve?: <a href="https://bugs.mojang.com/browse/MC-202246">MC-202246</a>
+ *  Maybe improves fix?: <a href="https://bugs.mojang.com/browse/MC-202246">MC-202246</a>
  */
 @MinecraftRequirement(@VersionRange(minVersion = "1.16.3", maxVersion = "1.16.5"))
 @Mixin(ServerLevel.class)
